@@ -88,6 +88,36 @@ def create_bulk_import(ttl_file):
         bulk_data.append(json.dumps(action))
         bulk_data.append(json.dumps(doc))
     
+    # Query for newspapers
+    newspaper_query = """
+    SELECT ?entity ?name
+    WHERE {
+        ?entity a schema:Newspaper ;
+                schema:name ?name .
+    }
+    """
+    
+    # Execute the newspaper query and process results
+    for row in g.query(newspaper_query, initNs={"schema": SCHEMA}):
+        entity_uri = str(row.entity)
+        entity_id = entity_uri.split('/')[-1]
+        
+        action = {
+            "index": {
+                "_id": entity_id
+            }
+        }
+        
+        doc = {
+            "@id": entity_uri,
+            "type": "krant",
+            "name": str(row.name),
+            "titel": str(row.name)
+        }
+        
+        bulk_data.append(json.dumps(action))
+        bulk_data.append(json.dumps(doc))
+    
     # Join with newlines to create the bulk import format
     return "\n".join(bulk_data) + "\n"
 

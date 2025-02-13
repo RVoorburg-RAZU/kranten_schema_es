@@ -90,8 +90,8 @@
 
         // Facetten die we willen tonen
         const FACET_FIELDS = [
-            'titel.keyword',
             'type',
+            'titel.keyword',
             'issue'
         ];
 
@@ -224,8 +224,8 @@
             facetsDiv.innerHTML = '';
 
             const facetLabels = {
+                'type': 'Soort resultaat',
                 'titel.keyword': 'Krant',
-                'type': 'Type',
                 'issue': 'Datum'
             };
 
@@ -236,7 +236,18 @@
                     const div = document.createElement('div');
                     div.innerHTML = `<h4>${label}</h4>`;
                     
-                    buckets.forEach(bucket => {
+                    // Sorteer de buckets voor het type facet in een specifieke volgorde
+                    let sortedBuckets = buckets;
+                    if (field === 'type') {
+                        const typeOrder = ['krant', 'aflevering krant', 'pagina'];
+                        sortedBuckets = buckets.sort((a, b) => {
+                            const indexA = typeOrder.indexOf(a.key);
+                            const indexB = typeOrder.indexOf(b.key);
+                            return indexA - indexB;
+                        });
+                    }
+                    
+                    sortedBuckets.forEach(bucket => {
                         const checked = activeFilters[field]?.includes(bucket.key);
                         const escapedKey = bucket.key.replace(/'/g, "\\'");
                         div.innerHTML += `
