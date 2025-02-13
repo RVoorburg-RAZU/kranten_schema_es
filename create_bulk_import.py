@@ -1,8 +1,20 @@
 from rdflib import Graph, Namespace
 import json
+from datetime import datetime
 
 # Define namespaces
 SCHEMA = Namespace("http://schema.org/")
+
+def parse_date(date_str):
+    try:
+        date = datetime.strptime(date_str, "%Y-%m-%d")
+        return {
+            'year': date.strftime("%Y"),
+            'month': date.strftime("%Y-%m"),
+            'day': date.strftime("%Y-%m-%d")
+        }
+    except ValueError:
+        return None
 
 def create_bulk_import(ttl_file):
     # Create a new RDF graph
@@ -22,9 +34,13 @@ def create_bulk_import(ttl_file):
                 schema:name ?name ;
                 schema:position ?position ;
                 schema:isPartOf ?isPartOf .
-        ?isPartOf schema:isPartOf ?krant ;
-                  schema:datePublished ?issue .
-        ?krant schema:name ?titel .
+        ?isPartOf 
+                a schema:PublicationIssue ;
+                schema:isPartOf ?krant ;
+                schema:datePublished ?issue .
+        ?krant 
+                a schema:Newspaper
+                schema:name ?titel .
     }
     """
     
@@ -32,6 +48,8 @@ def create_bulk_import(ttl_file):
     for row in g.query(page_query, initNs={"schema": SCHEMA}):
         entity_uri = str(row.entity)
         entity_id = entity_uri.split('/')[-1]
+        
+        date_parts = parse_date(str(row.issue))
         
         action = {
             "index": {
@@ -49,6 +67,11 @@ def create_bulk_import(ttl_file):
             "issue": str(row.issue)
         }
         
+        if date_parts:
+            doc["issue_year"] = date_parts["year"]
+            doc["issue_month"] = date_parts["month"]
+            doc["issue_day"] = date_parts["day"]
+        
         bulk_data.append(json.dumps(action))
         bulk_data.append(json.dumps(doc))
 
@@ -61,7 +84,9 @@ def create_bulk_import(ttl_file):
                 schema:name ?name ;
                 schema:isPartOf ?isPartOf ;
                 schema:datePublished ?issue .
-        ?isPartOf schema:name ?titel .
+        ?isPartOf
+                a schema:Newspaper 
+                schema:name ?titel .
     }
     """
     
@@ -69,6 +94,8 @@ def create_bulk_import(ttl_file):
     for row in g.query(issue_query, initNs={"schema": SCHEMA}):
         entity_uri = str(row.entity)
         entity_id = entity_uri.split('/')[-1]
+        
+        date_parts = parse_date(str(row.issue))
         
         action = {
             "index": {
@@ -85,9 +112,14 @@ def create_bulk_import(ttl_file):
             "titel": str(row.titel)
         }
         
+        if date_parts:
+            doc["issue_year"] = date_parts["year"]
+            doc["issue_month"] = date_parts["month"]
+            doc["issue_day"] = date_parts["day"]
+        
         bulk_data.append(json.dumps(action))
         bulk_data.append(json.dumps(doc))
-    
+
     # Query for newspapers
     newspaper_query = """
     SELECT ?entity ?name

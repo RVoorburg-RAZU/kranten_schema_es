@@ -92,7 +92,9 @@
         const FACET_FIELDS = [
             'type',
             'titel.keyword',
-            'issue'
+            'issue_year',
+            'issue_month',
+            'issue_day'
         ];
 
         // Actieve facet filters
@@ -134,7 +136,6 @@
                     });
                 }
             } else {
-                // Als er geen zoektekst is, toon alles
                 query.query.bool.must.push({
                     match_all: {}
                 });
@@ -142,18 +143,43 @@
 
             // Voeg facet aggregaties toe
             FACET_FIELDS.forEach(field => {
-                query.aggs[field] = {
-                    terms: { field: field }
-                };
+                // Voor issue_month en issue_day voegen we een filter toe op basis van het hogere niveau
+                if (field === 'issue_month' && activeFilters['issue_year']) {
+                    query.aggs[field] = {
+                        filter: {
+                            terms: { 'issue_year': activeFilters['issue_year'] }
+                        },
+                        aggs: {
+                            filtered: {
+                                terms: { field: field }
+                            }
+                        }
+                    };
+                } else if (field === 'issue_day' && activeFilters['issue_month']) {
+                    query.aggs[field] = {
+                        filter: {
+                            terms: { 'issue_month': activeFilters['issue_month'] }
+                        },
+                        aggs: {
+                            filtered: {
+                                terms: { field: field }
+                            }
+                        }
+                    };
+                } else {
+                    query.aggs[field] = {
+                        terms: { field: field }
+                    };
+                }
             });
 
             // Voeg actieve filters toe
             Object.entries(activeFilters).forEach(([field, values]) => {
-                values.forEach(value => {
+                if (values && values.length > 0) {
                     query.query.bool.filter.push({
-                        term: { [field]: value }
+                        terms: { [field]: values }
                     });
-                });
+                }
             });
 
             try {
@@ -226,12 +252,31 @@
             const facetLabels = {
                 'type': 'Soort resultaat',
                 'titel.keyword': 'Krant',
-                'issue': 'Datum'
+                'issue_year': 'Jaar',
+                'issue_month': 'Maand',
+                'issue_day': 'Dag'
             };
 
             FACET_FIELDS.forEach(field => {
-                const buckets = aggregations[field].buckets;
-                if (buckets.length > 0) {
+                // Haal de juiste buckets op, afhankelijk van of het een genest facet is
+                let buckets;
+                if ((field === 'issue_month' || field === 'issue_day') && aggregations[field]?.filtered) {
+                    buckets = aggregations[field].filtered.buckets;
+                } else {
+                    buckets = aggregations[field]?.buckets;
+                }
+
+                // Toon alleen maanden als er een jaar is geselecteerd
+                if (field === 'issue_month' && !activeFilters['issue_year']) {
+                    return;
+                }
+                
+                // Toon alleen dagen als er een maand is geselecteerd
+                if (field === 'issue_day' && !activeFilters['issue_month']) {
+                    return;
+                }
+
+                if (buckets && buckets.length > 0) {
                     const label = facetLabels[field] || field.split('.')[0];
                     const div = document.createElement('div');
                     div.innerHTML = `<h4>${label}</h4>`;
@@ -250,13 +295,22 @@
                     sortedBuckets.forEach(bucket => {
                         const checked = activeFilters[field]?.includes(bucket.key);
                         const escapedKey = bucket.key.replace(/'/g, "\\'");
+                        
+                        // Voor datumvelden, toon alleen het relevante deel
+                        let displayKey = escapedKey;
+                        if (field === 'issue_month') {
+                            displayKey = escapedKey.split('-')[1]; // Toon alleen de maand
+                        } else if (field === 'issue_day') {
+                            displayKey = escapedKey.split('-')[2]; // Toon alleen de dag
+                        }
+                        
                         div.innerHTML += `
                             <div>
                                 <input type="checkbox" 
                                        id="${escapedKey}" 
                                        ${checked ? 'checked' : ''}
                                        onchange="toggleFilter('${field}', '${escapedKey}')">
-                                <label for="${escapedKey}">${bucket.key} (${bucket.doc_count})</label>
+                                <label for="${escapedKey}">${displayKey} (${bucket.doc_count})</label>
                             </div>
                         `;
                     });

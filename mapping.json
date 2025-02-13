@@ -26,6 +26,15 @@
       },
       "issue": {
         "type": "keyword"
+      },
+      "issue_year": {
+        "type": "keyword"
+      },
+      "issue_month": {
+        "type": "keyword"
+      },
+      "issue_day": {
+        "type": "keyword"
       }
     }
   },
