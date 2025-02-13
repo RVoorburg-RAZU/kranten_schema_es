@@ -1,0 +1,199 @@
+@prefix iiif: <http://iiif.io/api/presentation/3#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Testdata opzet krantenmetadata
+# Voorstel alle kranten onder 1 toegang (hier nu "1234").
+
+
+# COLLECTIE, hoogste niveau
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-0>
+    a schema:Collection ;
+    schema:additionalType "bibliografische collectie" ;     # aka ldto:classification, toe te voegen aan thes. 'soort'
+    schema:name "RAZU Krantencollectie" ;
+    schema:temporalCoverage "1800-01-01/1900-12-31" .       # of eventueel startDate en endDate, maar daar kunnen ook de objecten voor bevraagd worden
+
+# TITEL - voorbeeld
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-1>
+    a schema:Newspaper ; 
+    schema:additionalType "krantentitel" ;                  # aka ldto:classification, toe te voegen aan thes. 'soort'
+    schema:name "Amerongse Courant" ;
+    schema:description "verschijnt wekelijks"  ;            # TODO     
+    schema:temporalCoverage "1870-01-01/1900-12-31" ;       # wel graag specifieke formattering
+    schema:publisher "uitgever x" ;                         # wordt een URI uit onze actoren-thesaurus
+    schema:spatialCoverage "Amerongen" ;                    # worden één of meerdere URIs uit onze plaatsen-thesaurus
+    schema:license "CC-BY-4.0" ;                            # wordt een URI uit onze licentie-thesaurus
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-0> .
+    # welke metadata missen we ? linken naar voorlopers e.d.?
+
+# AFLEVERING - voorbeeld
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-2>
+    a schema:PublicationIssue ;
+    schema:additionalType "aflevering krant" ;              # aka ldto:classification, toe te voegen aan thes. 'soort' 
+    schema:name "Amerongse Courant, 1 februari 1930" ;
+    schema:datePublished "1930-02-01"^^xsd:date ;           # volume-year leiden we af
+    schema:issueNumber "12" ;
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-1> .
+    # welke metadata missen we?
+
+# PAGINA - voorbeeld
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-3>
+    a schema:CreativeWork ;                                 # is weinig specifiek maar isPartOf van een PublicationIssue van een Newspaper
+    schema:additionalType "pagina" ;                        # aka ldto:classification, toe te voegen aan thes. 'soort'                         
+    schema:name "Pagina 1, Amerongse Courant" ;
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-2> ;
+    schema:position 1 ;
+    schema:pagination "a" .                                 # optioneel om gebruikte aanduiding over te nemen  
+    # uiteindelijk linken we hier ook naar scan en alto-xml       
+
+
+## VERDERE TESTDATA - voor proefindexering ##
+
+# TITEL
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-7>
+    a schema:Newspaper ;
+    schema:additionalType "krantentitel" ;
+    schema:name "Rhenens Betuwse Courant" ;
+    schema:temporalCoverage "1840-01-01/1985-12-31" ;
+    schema:publisher "uitgever y" ;
+    schema:spatialCoverage "Rhenen", "Kesteren" ;
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-0> .
+    
+    
+# AFLEVERINGEN
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-8>
+    a schema:PublicationIssue ;
+    schema:additionalType "aflevering krant" ;
+    schema:name "Amerongse Courant, 2 februari 1930" ;
+    schema:datePublished "1930-02-02"^^xsd:date ;
+    schema:issueNumber "13" ;
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-1> .
+
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-9>
+    a schema:PublicationIssue ;
+    schema:additionalType "aflevering krant" ;
+    schema:name "Rhenens Betuwse Courant, 20 maart 1900" ;
+    schema:datePublished "1900-03-20"^^xsd:date ;
+    schema:issueNumber "1" ;
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-7> .
+
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-10>
+    a schema:PublicationIssue ;
+    schema:additionalType "aflevering krant" ;
+    schema:name "Rhenens Betuwse Courant, 27 maart 1930" ;
+    schema:datePublished "1900-03-27"^^xsd:date ;
+    schema:issueNumber "2" ;
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-7> .
+
+# PAGINA's
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-4>
+    a schema:CreativeWork ;
+    schema:additionalType "pagina" ;
+    schema:name "Pagina 2, Amerongse Courant" ;
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-2> ;
+    schema:position 2 ;
+    schema:pagination "b".
+
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-5>
+    a schema:CreativeWork ;
+    schema:additionalType "pagina" ;
+    schema:name "Pagina 3, Amerongse Courant" ;
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-2> ;
+    schema:position 3 ;
+    schema:pagination "c".
+
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-6>
+    a schema:CreativeWork ;
+    schema:additionalType "pagina" ;
+    schema:name "Pagina 4, Amerongse Courant" ;
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-2> ;
+    schema:position 4 ;
+    schema:pagination "d".
+
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-11>
+    a schema:CreativeWork ;
+    schema:additionalType "pagina" ;
+    schema:name "Pagina 1, Amerongse Courant" ;
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-8> ;
+    schema:position 1 ;
+    schema:pagination "a".
+
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-12>
+    a schema:CreativeWork ;
+    schema:additionalType "pagina" ;
+    schema:name "Pagina 2, Amerongse Courant" ;
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-8> ;
+    schema:position 2 ;
+    schema:pagination "b".
+
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-13>
+    a schema:CreativeWork ;
+    schema:additionalType "pagina" ;
+    schema:name "Pagina 3, Amerongse Courant" ;
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-8> ;
+    schema:position 3 ;
+    schema:pagination "c".
+
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-14>
+    a schema:CreativeWork ;
+    schema:additionalType "pagina" ;
+    schema:name "Pagina 4, Amerongse Courant" ;
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-8> ;
+    schema:position 4 ;
+    schema:pagination "d".
+
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-15>
+    a schema:CreativeWork ;
+    schema:additionalType "pagina" ;
+    schema:name "Pagina 1, Rhenens Betuwse Courant" ;
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-9> ;
+    schema:position 1 .
+
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-16>
+    a schema:CreativeWork ;
+    schema:additionalType "pagina" ;
+    schema:name "Pagina 2, Rhenens Betuwse Courant" ;
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-9> ;
+    schema:position 2 .
+
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-17>
+    a schema:CreativeWork ;
+    schema:additionalType "pagina" ;
+    schema:name "Pagina 3, Rhenens Betuwse Courant" ;
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-9> ;
+    schema:position 3 .
+
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-18>
+    a schema:CreativeWork ;
+    schema:additionalType "pagina" ;
+    schema:name "Pagina 4, Rhenens Betuwse Courant" ;
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-9> ;
+    schema:position 4 .
+
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-19>
+    a schema:CreativeWork ;
+    schema:additionalType "pagina" ;
+    schema:name "Pagina 1, Rhenens Betuwse Courant" ;
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-10> ;
+    schema:position 1 .
+
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-20>
+    a schema:CreativeWork ;
+    schema:additionalType "pagina" ;
+    schema:name "Pagina 2, Rhenens Betuwse Courant" ;
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-10> ;
+    schema:position 2 .
+
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-21>
+    a schema:CreativeWork ;
+    schema:additionalType "pagina" ;
+    schema:name "Pagina 3, Rhenens Betuwse Courant" ;
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-10> ;
+    schema:position 3 .
+
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-22>
+    a schema:CreativeWork ;
+    schema:additionalType "pagina" ;
+    schema:name "Pagina 4, Rhenens Betuwse Courant" ;
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-10> ;
+    schema:position 4 .

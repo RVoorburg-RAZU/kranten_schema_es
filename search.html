@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kranten Zoeken</title>
+    <style>
+        .container {
+            display: flex;
+            padding: 20px;
+        }
+        .facets {
+            width: 300px;
+            margin-right: 20px;
+        }
+        .facets label {
+            word-wrap: break-word;
+            display: inline-block;
+            max-width: 250px;
+            margin-left: 5px;
+        }
+        .facets div {
+            margin-bottom: 5px;
+        }
+        .results-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .results {
+            flex-grow: 1;
+        }
+        .search-box {
+            margin-bottom: 20px;
+            width: 100%;
+            display: flex;
+            gap: 10px;
+        }
+        .search-box input {
+            flex: 1;
+            padding: 5px;
+        }
+        .search-box button {
+            padding: 5px 15px;
+            white-space: nowrap;
+        }
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .pagination button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="facets" id="facets">
+            <!-- Facetten komen hier -->
+        </div>
+        <div class="results-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Zoeken..." onkeyup="if(event.key === 'Enter') search()">
+                <button onclick="search()">Zoek</button>
+            </div>
+            <div class="results" id="results">
+                <!-- Zoekresultaten komen hier -->
+            </div>
+            <div class="pagination" id="pagination">
+                <!-- Pagineringselementen komen hier -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Elasticsearch configuratie
+        const ES_HOST = 'https://es.digitopia.nl';
+        const ES_INDEX = 'newspapers';
+        
+        // Haal credentials uit URL parameters
+        function getCredentials() {
+            const params = new URLSearchParams(window.location.search);
+            const user = params.get('user');
+            const pass = params.get('pass');
+            if (!user || !pass) {
+                return '';
+            }
+            return btoa(`${user}:${pass}`);
+        }
+
+        // Facetten die we willen tonen
+        const FACET_FIELDS = [
+            'titel.keyword',
+            'type',
+            'issue'
+        ];
+
+        // Actieve facet filters
+        let activeFilters = {};
+
+        let currentPage = 0;
+        const pageSize = 20;
+
+        async function search() {
+            const searchText = document.getElementById('searchInput').value;
+            const authHeader = getCredentials();
+            
+            // Bouw de query
+            const query = {
+                size: pageSize,
+                from: currentPage * pageSize,
+                query: {
+                    bool: {
+                        must: [],
+                        filter: []
+                    }
+                },
+                aggs: {}
+            };
+
+            // Voeg zoekquery toe als er tekst is ingevuld
+            if (searchText && searchText.trim() !== '') {
+                if (searchText === '*') {
+                    query.query.bool.must.push({
+                        match_all: {}
+                    });
+                } else {
+                    query.query.bool.must.push({
+                        query_string: {
+                            query: searchText,
+                            fields: ['name', 'titel'],
+                            default_operator: 'AND'
+                        }
+                    });
+                }
+            } else {
+                // Als er geen zoektekst is, toon alles
+                query.query.bool.must.push({
+                    match_all: {}
+                });
+            }
+
+            // Voeg facet aggregaties toe
+            FACET_FIELDS.forEach(field => {
+                query.aggs[field] = {
+                    terms: { field: field }
+                };
+            });
+
+            // Voeg actieve filters toe
+            Object.entries(activeFilters).forEach(([field, values]) => {
+                values.forEach(value => {
+                    query.query.bool.filter.push({
+                        term: { [field]: value }
+                    });
+                });
+            });
+
+            try {
+                // Voer de zoekopdracht uit
+                const headers = {
+                    'Content-Type': 'application/json'
+                };
+                
+                if (authHeader) {
+                    headers['Authorization'] = `Basic ${authHeader}`;
+                }
+
+                const response = await fetch(`${ES_HOST}/${ES_INDEX}/_search`, {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify(query)
+                });
+
+                const data = await response.json();
+                
+                // Toon resultaten
+                displayResults(data.hits.hits, data.hits.total.value);
+                
+                // Toon facetten
+                displayFacets(data.aggregations);
+
+                // Update paginering
+                updatePagination(data.hits.total.value);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function displayResults(hits, totalHits) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+
+            // Voeg kop en resultaat telling toe
+            const start = currentPage * pageSize + 1;
+            const end = Math.min((currentPage + 1) * pageSize, totalHits);
+            
+            const header = document.createElement('div');
+            header.innerHTML = `
+                <h2>Zoekresultaten</h2>
+                <p>Resultaten ${start} tot ${end} van de ${totalHits}</p>
+            `;
+            resultsDiv.appendChild(header);
+
+            hits.forEach(hit => {
+                const doc = hit._source;
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <h3>${doc.name}</h3>
+                    <p>
+                        Krant: ${doc.titel}<br>
+                        Type: ${doc.type}<br>
+                        Positie: ${doc.position}<br>
+                        Datum: ${doc.issue}
+                    </p>
+                    <hr>
+                `;
+                resultsDiv.appendChild(div);
+            });
+        }
+
+        function displayFacets(aggregations) {
+            const facetsDiv = document.getElementById('facets');
+            facetsDiv.innerHTML = '';
+
+            const facetLabels = {
+                'titel.keyword': 'Krant',
+                'type': 'Type',
+                'issue': 'Datum'
+            };
+
+            FACET_FIELDS.forEach(field => {
+                const buckets = aggregations[field].buckets;
+                if (buckets.length > 0) {
+                    const label = facetLabels[field] || field.split('.')[0];
+                    const div = document.createElement('div');
+                    div.innerHTML = `<h4>${label}</h4>`;
+                    
+                    buckets.forEach(bucket => {
+                        const checked = activeFilters[field]?.includes(bucket.key);
+                        const escapedKey = bucket.key.replace(/'/g, "\\'");
+                        div.innerHTML += `
+                            <div>
+                                <input type="checkbox" 
+                                       id="${escapedKey}" 
+                                       ${checked ? 'checked' : ''}
+                                       onchange="toggleFilter('${field}', '${escapedKey}')">
+                                <label for="${escapedKey}">${bucket.key} (${bucket.doc_count})</label>
+                            </div>
+                        `;
+                    });
+                    facetsDiv.appendChild(div);
+                }
+            });
+        }
+
+        function toggleFilter(field, value) {
+            if (!activeFilters[field]) {
+                activeFilters[field] = [];
+            }
+            
+            const index = activeFilters[field].indexOf(value);
+            if (index === -1) {
+                activeFilters[field].push(value);
+            } else {
+                activeFilters[field].splice(index, 1);
+            }
+            
+            if (activeFilters[field].length === 0) {
+                delete activeFilters[field];
+            }
+            
+            currentPage = 0;  // Reset to first page when filter changes
+            search();
+        }
+
+        function updatePagination(totalHits) {
+            const paginationElement = document.getElementById('pagination');
+            paginationElement.innerHTML = '';
+            const totalPages = Math.ceil(totalHits / pageSize);
+
+            // Toon maximaal 10 pagina knoppen
+            const maxButtons = 10;
+            const startPage = Math.max(0, Math.min(currentPage - Math.floor(maxButtons/2), totalPages - maxButtons));
+            const endPage = Math.min(totalPages, startPage + maxButtons);
+
+            if (currentPage > 0) {
+                const prevButton = document.createElement('button');
+                prevButton.innerText = '←';
+                prevButton.onclick = () => {
+                    currentPage--;
+                    search();
+                };
+                paginationElement.appendChild(prevButton);
+            }
+
+            for (let i = startPage; i < endPage; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.innerText = i + 1;
+                if (i === currentPage) {
+                    pageButton.style.fontWeight = 'bold';
+                }
+                pageButton.onclick = () => {
+                    currentPage = i;
+                    search();
+                };
+                paginationElement.appendChild(pageButton);
+            }
+
+            if (currentPage < totalPages - 1) {
+                const nextButton = document.createElement('button');
+                nextButton.innerText = '→';
+                nextButton.onclick = () => {
+                    currentPage++;
+                    search();
+                };
+                paginationElement.appendChild(nextButton);
+            }
+        }
+    </script>
+    <script>
+        // Start het ophalen van de mapping bij laden van de pagina
+        search();
+    </script>
+</body>
+</html>

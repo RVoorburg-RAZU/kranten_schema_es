@@ -1,0 +1,36 @@
+{
+  "mappings": {
+    "properties": {
+      "@id": {
+        "type": "keyword"
+      },
+      "type": {
+        "type": "keyword"
+      },
+      "name": {
+        "type": "text"
+      },
+      "position": {
+        "type": "integer"
+      },
+      "isPartOf": {
+        "type": "keyword"
+      },
+      "titel": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "issue": {
+        "type": "keyword"
+      }
+    }
+  },
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 1
+  }
+}
