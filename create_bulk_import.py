@@ -1,9 +1,19 @@
 from rdflib import Graph, Namespace
 import json
 from datetime import datetime
+import os
 
 # Define namespaces
 SCHEMA = Namespace("http://schema.org/")
+
+def read_text_file(image_filename):
+    """Read the corresponding text file for a given image filename."""
+    text_path = os.path.join("source", "img", "text", image_filename.replace('.jpg', '.txt'))
+    try:
+        with open(text_path, 'r', encoding='utf-8') as f:
+            return f.read().strip()
+    except FileNotFoundError:
+        return None
 
 def parse_date(date_str):
     try:
@@ -27,19 +37,20 @@ def create_bulk_import(ttl_file):
     
     # Query for pages
     page_query = """
-    SELECT ?entity ?name ?position ?isPartOf ?krant ?titel ?issue
+    SELECT ?entity ?name ?position ?isPartOf ?krant ?titel ?issue ?image
     WHERE {
         ?entity a schema:CreativeWork ;
                 schema:additionalType "pagina" ;
                 schema:name ?name ;
                 schema:position ?position ;
-                schema:isPartOf ?isPartOf .
+                schema:isPartOf ?isPartOf ;
+                schema:image ?image .
         ?isPartOf 
                 a schema:PublicationIssue ;
                 schema:isPartOf ?krant ;
                 schema:datePublished ?issue .
         ?krant 
-                a schema:Newspaper
+                a schema:Newspaper ;
                 schema:name ?titel .
     }
     """
@@ -64,8 +75,14 @@ def create_bulk_import(ttl_file):
             "position": int(row.position),
             "isPartOf": str(row.isPartOf),
             "titel": str(row.titel),
-            "issue": str(row.issue)
+            "issue": str(row.issue),
+            "image": str(row.image)
         }
+        
+        # Add full text content if available
+        full_text = read_text_file(str(row.image))
+        if full_text:
+            doc["full_text"] = full_text
         
         if date_parts:
             doc["issue_year"] = date_parts["year"]
@@ -77,7 +94,7 @@ def create_bulk_import(ttl_file):
 
     # Query for publication issues
     issue_query = """
-    SELECT ?entity ?type ?name ?isPartOf ?issue ?titel
+    SELECT ?entity ?type ?name ?isPartOf ?issue ?titel ?firstpage ?image
     WHERE {
         ?entity a schema:PublicationIssue ;
                 schema:additionalType ?type ;
@@ -85,8 +102,13 @@ def create_bulk_import(ttl_file):
                 schema:isPartOf ?isPartOf ;
                 schema:datePublished ?issue .
         ?isPartOf
-                a schema:Newspaper 
+                a schema:Newspaper ;
                 schema:name ?titel .
+        ?firstpage
+                a schema:CreativeWork ;
+                schema:isPartOf ?entity ;
+                schema:position 1 ;
+                schema:image ?image .
     }
     """
     
@@ -108,8 +130,9 @@ def create_bulk_import(ttl_file):
             "type": str(row.type),
             "name": str(row.name),
             "isPartOf": str(row.isPartOf),
+            "titel": str(row.titel),
             "issue": str(row.issue),
-            "titel": str(row.titel)
+            "image": str(row.image)
         }
         
         if date_parts:
