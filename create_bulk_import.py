@@ -37,7 +37,7 @@ def create_bulk_import(ttl_file):
     
     # Query for pages
     page_query = """
-    SELECT ?entity ?name ?position ?isPartOf ?krant ?titel ?issue ?image
+    SELECT ?entity ?name ?position ?isPartOf ?krant ?titel ?issue ?image ?jaargang
     WHERE {
         ?entity a schema:CreativeWork ;
                 schema:additionalType "pagina" ;
@@ -48,7 +48,11 @@ def create_bulk_import(ttl_file):
         ?isPartOf 
                 a schema:PublicationIssue ;
                 schema:isPartOf ?krant ;
-                schema:datePublished ?issue .
+                schema:datePublished ?issue ;
+                schema:isPartOf [
+                    a schema:PublicationVolume ;
+                    schema:volumeNumber ?jaargang
+                ] .
         ?krant 
                 a schema:Newspaper ;
                 schema:name ?titel .
@@ -76,7 +80,8 @@ def create_bulk_import(ttl_file):
             "isPartOf": str(row.isPartOf),
             "titel": str(row.titel),
             "issue": str(row.issue),
-            "image": str(row.image)
+            "image": str(row.image),
+            "jaargang": str(row.jaargang)
         }
         
         # Add full text content if available
@@ -94,13 +99,17 @@ def create_bulk_import(ttl_file):
 
     # Query for publication issues
     issue_query = """
-    SELECT ?entity ?type ?name ?isPartOf ?issue ?titel ?firstpage ?image
+    SELECT ?entity ?type ?name ?isPartOf ?issue ?titel ?firstpage ?image ?jaargang
     WHERE {
         ?entity a schema:PublicationIssue ;
                 schema:additionalType ?type ;
                 schema:name ?name ;
                 schema:isPartOf ?isPartOf ;
-                schema:datePublished ?issue .
+                schema:datePublished ?issue ;
+                schema:isPartOf [
+                    a schema:PublicationVolume ;
+                    schema:volumeNumber ?jaargang
+                ] .
         ?isPartOf
                 a schema:Newspaper ;
                 schema:name ?titel .
@@ -132,7 +141,8 @@ def create_bulk_import(ttl_file):
             "isPartOf": str(row.isPartOf),
             "titel": str(row.titel),
             "issue": str(row.issue),
-            "image": str(row.image)
+            "image": str(row.image),
+            "jaargang": str(row.jaargang)
         }
         
         if date_parts:
@@ -145,11 +155,15 @@ def create_bulk_import(ttl_file):
 
     # Query for newspapers
     newspaper_query = """
-    SELECT ?entity ?name
+    SELECT ?entity ?name ?alternateName ?publisher (GROUP_CONCAT(?plaats; separator=", ") as ?spatialCoverage)
     WHERE {
         ?entity a schema:Newspaper ;
-                schema:name ?name .
+                schema:name ?name ;
+                schema:spatialCoverage ?plaats ;
+                schema:publisher ?publisher .
+        OPTIONAL { ?entity schema:alternateName ?alternateName }
     }
+    GROUP BY ?entity ?name ?alternateName ?publisher
     """
     
     # Execute the newspaper query and process results
@@ -167,8 +181,13 @@ def create_bulk_import(ttl_file):
             "@id": entity_uri,
             "type": "krant",
             "name": str(row.name),
-            "titel": str(row.name)
+            "titel": str(row.name),
+            "publisher": str(row.publisher),
+            "spatialCoverage": str(row.spatialCoverage).split(", ")
         }
+        
+        if row.alternateName:
+            doc["alternateName"] = str(row.alternateName)
         
         bulk_data.append(json.dumps(action))
         bulk_data.append(json.dumps(doc))

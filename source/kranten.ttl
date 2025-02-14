@@ -13,12 +13,13 @@
     schema:name "RAZU Krantencollectie" ;
     schema:temporalCoverage "1800-01-01/1900-12-31" .       # of eventueel startDate en endDate, maar daar kunnen ook de objecten voor bevraagd worden
 
-# TITEL - voorbeeld
+
+# TITELS
 <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-1>
     a schema:Newspaper ; 
     schema:additionalType "krantentitel" ;                  # aka ldto:classification, toe te voegen aan thes. 'soort'
     schema:name "De Amerongse Courant" ;
-    schema:alternateTitle "Nieuws- en advertentieblad voor Amerongen, Leersum, Maarn, Maarsbergen, Doorn, Driebergen, Langbroek, Cothen, Wijk-bij-Duurstede enz" ; # of wisselt deze?
+    schema:alternateName "Nieuws- en advertentieblad voor Amerongen, Leersum, Maarn, Maarsbergen, Doorn, Driebergen, Langbroek, Cothen, Wijk-bij-Duurstede enz" ; # of wisselt deze?
     #schema:description "verschijnt wekelijks"  ;            # TODO     
     schema:temporalCoverage "1870/1929(1941)" ;              # of eventueel startDate en endDate, maar daar kunnen ook de objecten voor bevraagd worden. "1900-12-31" ;       # wel graag specifieke formattering
     schema:publisher "B. Ruitenbeek - Doorn" ;              # wordt een URI uit onze actoren-thesaurus
@@ -28,12 +29,23 @@
     schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-0> .
     # welke metadata missen we ? linken naar voorlopers e.d.?
 
-# AFLEVERING - voorbeeld
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-7>
+    a schema:Newspaper ;
+    schema:additionalType "krantentitel" ;
+    schema:name "Het Driemanschap" ;
+    schema:alternateName "Nieuws- en advertentieblad voor Bunnik, Odijk en Werkhoven" ;
+    schema:temporalCoverage "1940/1942" ;
+    schema:publisher "De Zeister Drukkerij" ;   # klopt dat?
+    schema:spatialCoverage "Bunnik", "Odijk", "Werkhoven" ;
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-0> .
+    
+
+# AFLEVERINGEN
 <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-2>
     a schema:PublicationIssue ;
     schema:additionalType "aflevering krant" ;
     schema:name "De Amerongse Courant, 28 december 1929" ;
-    schema:alternateTitle "Nieuws- en advertentieblad voor Amerongen, Leersum, Maarn, Maarsbergen, Doorn, Driebergen, Langbroek, Cothen, Wijk-bij-Duurstede enz"
+    schema:alternateName "Nieuws- en advertentieblad voor Amerongen, Leersum, Maarn, Maarsbergen, Doorn, Driebergen, Langbroek, Cothen, Wijk-bij-Duurstede enz" ;
     schema:datePublished "1929-12-28"^^xsd:date ;
     schema:isPartOf [
         a schema:PublicationVolume  ;
@@ -43,37 +55,12 @@
     schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-1> .
     # welke metadata missen we?
 
-# PAGINA - voorbeeld
-<https://data.razu.nl/id/object/NL-WbdRAZU_AC_1929_216>
-    a schema:CreativeWork ;                                 # is weinig specifiek maar isPartOf van een PublicationIssue van een Newspaper
-    schema:additionalType "pagina" ;                        # aka ldto:classification, toe te voegen aan thes. 'soort'                         
-    schema:name "Pagina 1, De Amerongse Courant #52" ;      # of andere volgorde / formattering?
-    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-2> ;
-    schema:position 1 .
-    # schema:pagination "a" .                                 # optioneel om gebruikte aanduiding over te nemen  
-    # uiteindelijk linken we hier ook naar scan en alto-xml       
 
-
-## VERDERE TESTDATA - voor proefindexering ##
-
-# TITEL
-<https://data.razu.nl/id/object/NL-WbdRAZU_AC_1929_216>
-    a schema:Newspaper ;
-    schema:additionalType "krantentitel" ;
-    schema:name "Het Driemanschap" ;
-    schema:alternateTitle "Nieuws- en advertentieblad voor Bunnik, Odijk en Werkhoven" ;
-    schema:temporalCoverage "1940/1942" ;
-    schema:publisher "De Zeister Drukkerij" ;   # klopt dat?
-    schema:spatialCoverage "Bunnik", "Odijk", "Werkhoven" ;
-    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-0> .
-    
-    
-# AFLEVERINGEN
 <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-8>
     a schema:PublicationIssue ;
     schema:additionalType "aflevering krant" ;
     schema:name "De Amerongse Courant, 15 juni 1929" ;
-    schema:alternateTitle "Nieuws- en advertentieblad voor Amerongen, Leersum, Maarn, Maarsbergen, Doorn, Driebergen, Langbroek, Cothen, Wijk-bij-Duurstede enz" ;
+    schema:alternateName "Nieuws- en advertentieblad voor Amerongen, Leersum, Maarn, Maarsbergen, Doorn, Driebergen, Langbroek, Cothen, Wijk-bij-Duurstede enz" ;
     schema:datePublished "1929-06-15"^^xsd:date ;
     schema:isPartOf [
         a schema:PublicationVolume  ;
@@ -88,7 +75,7 @@
     a schema:PublicationIssue ;
     schema:additionalType "aflevering krant" ;
     schema:name "Het Driemanschap" ;
-    schema:alternateTitle "Nieuws- en advertentieblad voor Bunnik, Odijk en Werkhoven" ;
+    schema:alternateName "Nieuws- en advertentieblad voor Bunnik, Odijk en Werkhoven" ;
     schema:datePublished "1942-04-03"^^xsd:date ;
     schema:isPartOf [
         a schema:PublicationVolume  ;
@@ -101,8 +88,8 @@
     a schema:PublicationIssue ;
     schema:additionalType "aflevering krant" ;
     schema:name "Het Driemanschap" ;
-    schema:alternateTitle "Nieuws- en advertentieblad voor Bunnik, Odijk en Werkhoven" ;
-    schema:datePublished "1900-04-10"^^xsd:date ;
+    schema:alternateName "Nieuws- en advertentieblad voor Bunnik, Odijk en Werkhoven" ;
+    schema:datePublished "1942-04-10"^^xsd:date ;
     schema:isPartOf [
         a schema:PublicationVolume  ;
         schema:volumeNumber "3" ;
@@ -110,115 +97,132 @@
     schema:issueNumber "7" ;
     schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-7> .
 
-# PAGINA's
+
+# PAGINA - voorbeeld
+<https://data.razu.nl/id/object/NL-WbdRAZU_AC_1929_216>
+    a schema:CreativeWork ;                                 # is weinig specifiek maar isPartOf van een PublicationIssue van een Newspaper
+    schema:additionalType "pagina" ;                        # aka ldto:classification, toe te voegen aan thes. 'soort'                         
+    schema:name "Pagina 1, De Amerongse Courant #52" ;      # of andere volgorde / formattering?
+    schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-2> ;
+    schema:position 1 ;
+    schema:image "NL-WbdRAZU_AC_1929_216.jpg" .
+
 <https://data.razu.nl/id/object/NL-WbdRAZU_AC_1929_217>
     a schema:CreativeWork ;
     schema:additionalType "pagina" ;
     schema:name "Pagina 2 - De Amerongse Courant #52" ;
     schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-2> ;
-    schema:position 2. 
+    schema:position 2 ;
+    schema:image "NL-WbdRAZU_AC_1929_217.jpg" .
 
 <https://data.razu.nl/id/object/NL-WbdRAZU_AC_1929_218>
     a schema:CreativeWork ;
     schema:additionalType "pagina" ;
     schema:name "Pagina 3, De Amerongse Courant #52" ;
     schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-2> ;
-    schema:position 3 .
+    schema:position 3 ;
+    schema:image "NL-WbdRAZU_AC_1929_218.jpg" .
 
 <https://data.razu.nl/id/object/NL-WbdRAZU_AC_1929_219>
     a schema:CreativeWork ;
     schema:additionalType "pagina" ;
     schema:name "Pagina 4, Amerongse Courant" ;
     schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-2> ;
-    schema:position 4 .
-
-
+    schema:position 4 ;
+    schema:image "NL-WbdRAZU_AC_1929_219.jpg" .
 
 <https://data.razu.nl/id/object/NL-WbdRAZU_AC_1929_100>
     a schema:CreativeWork ;
     schema:additionalType "pagina" ;
     schema:name "Pagina 1, De Amerongse Courant #24" ;
     schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-8> ;
-    schema:position 1 .
+    schema:position 1 ;
+    schema:image "NL-WbdRAZU_AC_1929_100.jpg" .
 
 <https://data.razu.nl/id/object/NL-WbdRAZU_AC_1929_101>
     a schema:CreativeWork ;
     schema:additionalType "pagina" ;
     schema:name "Pagina 2, De Amerongse Courant #24" ;
     schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-8> ;
-    schema:position 2.
+    schema:position 2 ;
+    schema:image "NL-WbdRAZU_AC_1929_101.jpg" .
 
 <https://data.razu.nl/id/object/NL-WbdRAZU_AC_1929_102>
     a schema:CreativeWork ;
     schema:additionalType "pagina" ;
     schema:name "Pagina 3, De Amerongse Courant #24" ;
     schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-8> ;
-    schema:position 3.
+    schema:position 3 ;
+    schema:image "NL-WbdRAZU_AC_1929_102.jpg" .
 
 <https://data.razu.nl/id/object/NL-WbdRAZU_AC_1929_103>
     a schema:CreativeWork ;
     schema:additionalType "pagina" ;
     schema:name "Pagina 4, De Amerongse Courant #24" ;
     schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-8> ;
-    schema:position 4.
-
-
-
-
+    schema:position 4 ;
+    schema:image "NL-WbdRAZU_AC_1929_103.jpg" .
 
 <https://data.razu.nl/id/object/NL-WbdRAZU_DMS_1942-04-03_001>
     a schema:CreativeWork ;
     schema:additionalType "pagina" ;
     schema:name "Pagina 1" ;
     schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-9> ;
-    schema:position 1 .
+    schema:position 1 ;
+    schema:image "NL-WbdRAZU_DMS_1942-04-03_001.jpg" .
 
 <https://data.razu.nl/id/object/NL-WbdRAZU_DMS_1942-04-03_002>
     a schema:CreativeWork ;
     schema:additionalType "pagina" ;
     schema:name "Pagina 2" ;
     schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-9> ;
-    schema:position 2 .
+    schema:position 2 ;
+    schema:image "NL-WbdRAZU_DMS_1942-04-03_002.jpg" .
 
 <https://data.razu.nl/id/object/NL-WbdRAZU_DMS_1942-04-03_003>
     a schema:CreativeWork ;
     schema:additionalType "pagina" ;
     schema:name "Pagina 3" ;
     schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-9> ;
-    schema:position 3 .
+    schema:position 3 ;
+    schema:image "NL-WbdRAZU_DMS_1942-04-03_003.jpg" .
 
 <https://data.razu.nl/id/object/NL-WbdRAZU_DMS_1942-04-03_004>
     a schema:CreativeWork ;
     schema:additionalType "pagina" ;
     schema:name "Pagina 4" ;
     schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-9> ;
-    schema:position 4 .
-
+    schema:position 4 ;
+    schema:image "NL-WbdRAZU_DMS_1942-04-03_004.jpg" .
 
 <https://data.razu.nl/id/object/NL-WbdRAZU_DMS_1942-04-10_001>
     a schema:CreativeWork ;
     schema:additionalType "pagina" ;
     schema:name "Pagina 1" ;
     schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-10> ;
-    schema:position 1 .
+    schema:position 1 ;
+    schema:image "NL-WbdRAZU_DMS_1942-04-10_001.jpg" .
 
 <https://data.razu.nl/id/object/NL-WbdRAZU_DMS_1942-04-10_002>
     a schema:CreativeWork ;
     schema:additionalType "pagina" ;
     schema:name "Pagina 2" ;
     schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-10> ;
-    schema:position 2 .
+    schema:position 2 ;
+    schema:image "NL-WbdRAZU_DMS_1942-04-10_002.jpg" .
 
-<https://data.razu.nl/id/object/NL-WbdRAZU_DMS_1942-04-10_004>
+<https://data.razu.nl/id/object/NL-WbdRAZU_DMS_1942-04-10_003>
     a schema:CreativeWork ;
     schema:additionalType "pagina" ;
     schema:name "Pagina 3" ;
     schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-10> ;
-    schema:position 3 .
+    schema:position 3 ;
+    schema:image "NL-WbdRAZU_DMS_1942-04-10_003.jpg" .
 
-<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-22>
+<https://data.razu.nl/id/object/NL-WbdRAZU_DMS_1942-04-10_004>
     a schema:CreativeWork ;
     schema:additionalType "pagina" ;
     schema:name "Pagina 4" ;
     schema:isPartOf <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-10> ;
-    schema:position 4 .
+    schema:position 4 ;
+    schema:image "NL-WbdRAZU_DMS_1942-04-10_004.jpg" .

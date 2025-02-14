@@ -24,6 +24,12 @@
           }
         }
       },
+      "alternateName": {
+        "type": "text"
+      },
+      "publisher": {
+        "type": "text"
+      },
       "issue": {
         "type": "keyword"
       },
@@ -34,6 +40,19 @@
         "type": "keyword"
       },
       "issue_day": {
+        "type": "keyword"
+      },
+      "image": {
+        "type": "keyword"
+      },
+      "full_text": {
+        "type": "text",
+        "analyzer": "dutch"
+      },
+      "jaargang": {
+        "type": "keyword"
+      },
+      "spatialCoverage": {
         "type": "keyword"
       }
     }
