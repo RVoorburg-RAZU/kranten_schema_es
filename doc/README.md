@@ -14,19 +14,19 @@ LDTO als kader vraag om de opzet van een hiérarchie van ldto:Informatieobjecten
 
 Het niveau van de collectie zouden we dan als volgt kunnen invullen:
 
-<collectie>                                                 # de URI van deze collectie, nu een fictieve waarde
-    a ldto:Informatieobject ;
-    ldto:aggregatieniveau "archief" ;                       # "archief" is het hoogste niveau in de ldto:Informatieobjecten-hiërarchie
-    ldto:classificatie "bibliografische collectie" ;        # ter aanvulling classificeren we dit als een 'bibliografische collectie'
-    ldto:naam "RAZU Krantencollectie" ;                     # we geven een naam
-    ldto:archiefvormer <https://data.razu.nl/id/actor/2bdb658a032a405d71c19159bd2bbb3a> ;  # = "RAZU", deze collectie is opgebouwd door RAZU 
-    ldto:dekkingInTijd [ a ldto:DekkingInTijdGegevens ;                                    #  de datumrange van al kranten in deze collectie
-        ldto:dekkingInTijdBeginDatum "1800"^^xsd:gYear ; 
-        ldto:dekkingInTijdEindDatum "1980"^^xsd:gYear ;  
-        ldto:dekkingInTijdType <https://data.razu.nl/id/dekkingintijdtype/a3e30182626730af3b3c2a7071c58038> # = Verschijningsperiode 
-    ] ;
-    dct:hasFormat <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-collectie.meta.json> .             # de URI van deze metadata zelf 
-
+    <collectie>                                                 # de URI van deze collectie, nu een fictieve waarde
+        a ldto:Informatieobject ;
+        ldto:aggregatieniveau "archief" ;                       # "archief" is het hoogste niveau in de ldto:Informatieobjecten-hiërarchie
+        ldto:classificatie "bibliografische collectie" ;        # ter aanvulling classificeren we dit als een 'bibliografische collectie'
+        ldto:naam "RAZU Krantencollectie" ;                     # we geven een naam
+        ldto:archiefvormer <https://data.razu.nl/id/actor/2bdb658a032a405d71c19159bd2bbb3a> ;  # = "RAZU", deze collectie is opgebouwd door RAZU 
+        ldto:dekkingInTijd [ a ldto:DekkingInTijdGegevens ;                                    #  de datumrange van al kranten in deze collectie
+            ldto:dekkingInTijdBeginDatum "1800"^^xsd:gYear ; 
+            ldto:dekkingInTijdEindDatum "1980"^^xsd:gYear ;  
+            ldto:dekkingInTijdType <https://data.razu.nl/id/dekkingintijdtype/a3e30182626730af3b3c2a7071c58038> # = Verschijningsperiode 
+        ] ;
+        dct:hasFormat <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-collectie.meta.json> .             # de URI van deze metadata zelf 
+ 
 Let op, ldto:aggregatieniveau en ldto:classificatie krigen als waarde een URI, hier voor de leesbaarheid als een literal getoond.
 Omdat hier gekozen is RAZU als archiefvormer te zien (wat nadrukkelijk wat anders is dan bijvoorbeeld de uitgever van een krant), wordt dit archief ook bewaard in de S3-bucket van RAZU.
 In het voorbeeld is niet expliciet een ldto:identifier opgenomen. Hier is de URI, het subject, de identifier. Een ldto:identifier kan opgegeven worden om bijvoorbeeld een koppeling met deze collectie in een legacy-systeem vast te leggen.
