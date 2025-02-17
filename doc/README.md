@@ -7,7 +7,7 @@ Uitgangspunten zijn:
 - Voor een bibliografisch perspectief breiden we LDTO uit met schema.org-metadata.
 
 
-LDTO als kader vraag om de opzet van een hiérarchie van ldto:Informatieobjecten. Zeker deze niveaus zijn dan wenselijk:
+LDTO als kader vraag om de opzet van een hiërarchie van `ldto:Informatieobjecten`. Zeker deze niveaus zijn dan wenselijk:
 1. De collectie van alle kranten.
 2. De verzameling van kranten die tot één titel behoren.
 3. Een aflevering ( issue') van een krant.
@@ -20,19 +20,19 @@ Het niveau van de collectie zouden we dan als volgt kunnen invullen:
         ldto:classificatie "bibliografische collectie" ;        # ter aanvulling classificeren we dit als een 'bibliografische collectie'
         ldto:naam "RAZU Krantencollectie" ;                     # we geven een naam
         ldto:archiefvormer <https://data.razu.nl/id/actor/2bdb658a032a405d71c19159bd2bbb3a> ;  # = "RAZU", deze collectie is opgebouwd door RAZU 
-        ldto:dekkingInTijd [ a ldto:DekkingInTijdGegevens ;                                    #  de datumrange van al kranten in deze collectie
+        ldto:dekkingInTijd [ a ldto:DekkingInTijdGegevens ;                                    #  de datumrange van onze kranten in deze collectie
             ldto:dekkingInTijdBeginDatum "1800"^^xsd:gYear ; 
             ldto:dekkingInTijdEindDatum "1980"^^xsd:gYear ;  
             ldto:dekkingInTijdType <https://data.razu.nl/id/dekkingintijdtype/a3e30182626730af3b3c2a7071c58038> # = Verschijningsperiode 
         ] ;
-        dct:hasFormat <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-collectie.meta.json> .             # de URI van deze metadata zelf 
+        dct:hasFormat <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-collectie.meta.json> .  # de URI van deze metadata zelf 
  
-Let op, ldto:aggregatieniveau en ldto:classificatie krigen als waarde een URI, hier voor de leesbaarheid als een literal getoond.
-Omdat hier gekozen is RAZU als archiefvormer te zien (wat nadrukkelijk wat anders is dan bijvoorbeeld de uitgever van een krant), wordt dit archief ook bewaard in de S3-bucket van RAZU.
-In het voorbeeld is niet expliciet een ldto:identifier opgenomen. Hier is de URI, het subject, de identifier. Een ldto:identifier kan opgegeven worden om bijvoorbeeld een koppeling met deze collectie in een legacy-systeem vast te leggen.
-We linken altijd van lager in de hiërarchie naar hoger in de hiërarchie. Op het hoogste niveau zijn er dus geen links naar een lager niveau.
+Let op, `ldto:aggregatieniveau` en `ldto:classificatie` krigen als waarde een URI, hier voor de leesbaarheid als een `literal` getoond.
+Omdat hier gekozen is RAZU als *archiefvormer* te zien (wat nadrukkelijk wat anders is dan bijvoorbeeld de uitgever van een krant), wordt dit archief ook bewaard in de S3-bucket van RAZU.
+In het voorbeeld is niet expliciet een `ldto:identifier` opgenomen. Hier is de URI, het subject, de identifier. Een `ldto:identifier` kan opgegeven worden om bijvoorbeeld een koppeling met deze collectie in een legacy-systeem vast te leggen.
+We linken altijd van lager in de hiërarchie naar hoger in de hiërarchie. Op dit hoogste niveau zijn er dus geen links naar een lager niveau.
 
-Het niveau van de verzameling van kranten met dezelfde titel is een ldto:Informatieobject op het ldto:aggregatieniveau "serie". Deze "serie" is niet één-op-één gelijk aan een krantentitel. De "serie" is een concrete verzameling van archiefstukken, een (kranten-) titel is een abstractere identiteit. Gesteld kan worden dat het ldto:Informatieobject betrekking heeft op de krantentitel (als groepering-criterium). Dit onderscheid leggen we als volgt vast":
+Eén niveau lager, dat van de verzameling van kranten met dezelfde titel, is een `ldto:Informatieobject` op het `ldto:aggregatieniveau` "serie". Deze "serie" is niet één-op-één gelijk aan een krantentitel. De "serie" is een *concrete deelverzameling van archiefstukken*, een (kranten-) titel is een *abstractere entiteit*, sec gezien geen verzameling. Gesteld kan worden dat het `ldto:Informatieobject` betrekking heeft op de krantentitel (als *groeperings-criterium*). Dit onderscheid leggen we als volgt vast":
 
     <serie>                                                     # de URI van een titel-serie, nu een fictieve waarde
         a ldto:Informatieobject ;
@@ -58,15 +58,15 @@ Het niveau van de verzameling van kranten met dezelfde titel is een ldto:Informa
             schema:name "De Amerongse Courant" ;
             schema:alternateName "Nieuws- en advertentieblad voor Amerongen, Leersum, Maarn, Maarsbergen, Doorn, Driebergen, Langbroek, Cothen, Wijk-bij-Duurstede enz" ;
             schema:spatialCoverage "Amerongen", "Leersum", "Maarn", "Maarsbergen", "Doorn", "Driebergen", "Langbroek", "Cothen", "Wijk bij Duurstede" ; 
-            schema:temporalCoverage "1870-" ;              # format??? ; geeft hier aan wanneer uitgekomen, dus niet per se gelijk aan de ldto:dekkingInTijd
-            schema:publisher "B. Ruitenbeek - Doorn" ;               # wordt een URI uit onze actoren-thesaurus
-            schema:sameAs <EXTERNE URIs, KB catalogus e.d> 
+            schema:temporalCoverage "1870-" ;               # format??? ; geeft hier aan wanneer uitgekomen, dus niet per se gelijk aan de ldto:dekkingInTijd
+            schema:publisher "B. Ruitenbeek - Doorn" ;      # wordt een URI uit onze actoren-thesaurus
+            schema:sameAs <EXTERNE URIs>                    # URI KB catalogus e.d
         ] ;
         dct:hasFormat <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-serie.meta.json> .             # de URI van deze metadata zelf 
 
-Het koppeling tussen de serie van archiefstukken die tot de zelfde titel behoren als de titel zelf, gebeurt hier via de schema:mainEntity-relatie. Bemerk dat de dekkingInTijd / temporalCoverage kunnen verschillen.
+Het koppeling tussen de serie van archiefstukken die tot de zelfde titel behoren als de titel zelf, gebeurt hier via de `schema:mainEntity-relatie`. Bemerk dat de *dekkingInTijd* / *temporalCoverage*  kunnen verschillen.
 
-Één niveau lager is het ldto:Informatieobject het gearchiveerde exemplaar van een aflevering van het tijdschrift. Ook hier wordt de relatie tussen het concrete archiefstuk de abstractere aflevering gerepresenteerd via de schema:mainEntity-relatie:
+Één niveau lager is het `ldto:Informatieobject` het gearchiveerde *exemplaar* van een aflevering van het tijdschrift. Ook hier wordt de relatie tussen het concrete archiefstuk de abstractere aflevering gerepresenteerd via de `schema:mainEntity-relatie`:
 
     <aflevering>
         a ldto:Informatieobject ;
@@ -97,11 +97,11 @@ Het koppeling tussen de serie van archiefstukken die tot de zelfde titel behoren
         dct:hasFormat <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-aflevering.meta.json> .             # de URI van deze metadata zelf 
 
 
-Van een aflevering worden digitaal, als bestand, de pagina's bewaard. Om de metadata eenvoudig te houden, en de verwarring te voorkomen dat een archiefstuk ook weer archiefstukken bevat, modeleren we een pagina niet als een ldto:Informatieobject maar enkel als een ldto:Bestand dat een representatie biedt van de aflevering. Op pagina-niveau zijn meerdere represenaties mogelijk, bijvoorbeeld de afbeelding (scan) of de alto-xml.
+Van een aflevering worden digitaal, als bestand, de pagina's bewaard. Om de metadata eenvoudig te houden, en de verwarring te voorkomen dat een archiefstuk (aflevering) ook weer archiefstukken (digitale pagina's) bevat, modeleren we een pagina *niet* als een `ldto:Informatieobject` maar enkel als een `ldto:Bestand` dat een representatie biedt van de aflevering. Op pagina-niveau zijn meerdere represenaties mogelijk, bijvoorbeeld de afbeelding (scan) of de alto-xml.
 
     <pagina_1>
         a ldto:Bestand ;
-        ldto:naam "Pagina 1, De Amerongse Courant, 28 december 1929" ;                      # of we houden het hier heel kort, nemen het wel uitgebreider op in Elastic Seacr  
+        ldto:naam "Pagina 1, De Amerongse Courant, 28 december 1929" ;     # of we houden het hier heel kort, nemen het wel uitgebreider op in Elasticsearch
         ldto:URLBestand "https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-500-999.jp2"^^xsd:anyURI ;
         ldto:bestandsformaat <https://data.razu.nl/id/bestandsformaat/84621bf26697a4a776a9007b97023412> ;  # jp2
         ldto:checksum [ a ldto:ChecksumGegevens ;
@@ -116,23 +116,7 @@ Van een aflevering worden digitaal, als bestand, de pagina's bewaard. Om de meta
         iiif:service <https://iiif.example.com/iiif/issue1/page1> ;
         dct:hasFormat <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-pagina_1.meta.json> . 
 
-Bovenstaande geeft de afbeelding van pagina 1. Het is herkenbaar als afbeelding door het ldto:bestandsformaat en dat een breedte en een hoogte gegeven zijn. In aanvulling op de URI van het object, de locatie op de S3 (ldto:URLBestand) en locatie van deze metadata op de S3 (dct:hasFormat) biedt deze metadata ook de IIIF-URI van de afbeelding zoals beschikbaar via de (nog in te richten IIIF-service).
+Bovenstaande geeft de afbeelding van pagina 1. Het is herkenbaar als afbeelding door het `ldto:bestandsformaat` en dat een breedte en een hoogte gegeven zijn (in pixels, via `schema:width` en `schema:height`). In aanvulling op de URI van het object, de locatie op de S3 (`ldto:URLBestand`) en locatie van deze metadata op de S3 (`dct:hasFormat`) biedt deze metadata ook de IIIF-URI (`iiif:service`) van de afbeelding zoals beschikbaar via de (nog in te richten IIIF-service).
 
-Als het bestand representatief zou zijn voor het volledige exemplaar van de aflevering dan zou attribuut 'schema:position' ontbreken.
-Als het bestand een alto-xml zou zijn dan zou dat indirect herleid kunnen worden aan het ldto:bestandsformaat ("xml") en aan de extensie in ldto:URLBestand (eingdigt op "alto.xml"). Daarnaast zou het object geen attributen schema:width, schema:height of iiif.service bevatten.
-
-
-
-
-
-
-
-
-Het is denkbaar dat er ook representaties zijn van de aflevering die niet betrekking hebben op een pagina maar op het gehele exemplaar. Di
-
-
-
-
-
-
-
+Als het bestand representatief zou zijn voor het volledige exemplaar van de aflevering, dan zou attribuut `schema:position` ontbreken.
+Als het bestand een alto-xml zou zijn, dan zou dat indirect herleid kunnen worden aan het `ldto:bestandsformaat` ("xml") en aan de extensie in `ldto:URLBestand` (eingdigt op "alto.xml"). Daarnaast zou het object geen attributen `schema:width`, `schema:height` of `iiif.service` bevatten.
