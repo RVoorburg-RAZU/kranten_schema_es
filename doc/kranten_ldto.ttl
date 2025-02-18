@@ -1,0 +1,147 @@
+@prefix iiif: <http://iiif.io/api/presentation/3#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ldto: <https://data.razu.nl/def/ldto/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+
+
+# Testdata opzet krantenmetadata
+# Voorstel alle kranten onder 1 toegangscode in bestandsnaam / URI (hier nu "1234").
+
+
+# COLLECTIE, hoogste niveau, omvat hier alle kranten in beheer van RAZU
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-0>
+    a ldto:Informatieobject ;
+    ldto:aggregatieniveau "archief" ;                       # -> URI
+    ldto:classificatie "bibliografische collectie" ;        # -> URI, thesaurus 'soort'
+    ldto:naam "Collectie kranten" ;                         # volgens model "Collectie xxx" - beginkapitaal? 
+    ldto:archiefvormer <https://data.razu.nl/id/actor/2bdb658a032a405d71c19159bd2bbb3a>,    # = RAZU 
+        <https://data.razu.nl/id/actor/aafc151236a6978fdf1732dcadb53f2e> ;                  # = Utrechtse Heuvelrug (etc.)
+    ldto:dekkingInTijd [ a ldto:DekkingInTijdGegevens ;                                     # De datumrange van al kranten in deze collectie
+        ldto:dekkingInTijdBeginDatum "1800"^^xsd:gYear ;                                    # altijd ISO 8601, maar ranges opgesplitst
+        ldto:dekkingInTijdEindDatum "1980"^^xsd:gYear ;  
+        ldto:dekkingInTijdType <https://data.razu.nl/id/dekkingintijdtype/a3e30182626730af3b3c2a7071c58038> # = Verschijningsperiode 
+    ] ,
+    dct:hasFormat <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-1234-0.meta.json>. # locatie van deze metadata op de storage  
+
+
+# TITEL    
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-1>
+    a ldto:Informatieobject ;
+    ldto:aggregatieniveau "serie";                          # -> URI
+    ldto:classificatie "krantentitel" ;                     # -> URI, thesaurus 'soort'
+    ldto:naam "De Amerongse Courant" ;
+    ldto:archiefvormer <https://data.razu.nl/id/actor/aafc151236a6978fdf1732dcadb53f2e> ;  # = Utrechtse Heuvelrug
+    ldto:isOnderdeelVan <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-0> ;
+    # dekkingInTijd heeft betrekking op de verzameling van wat we beheren, niet wanneer de titel is uitgegeven: 
+    ldto:dekkingInTijd [ a ldto:DekkingInTijdGegevens ;     
+        ldto:dekkingInTijdBeginDatum "1878"^^xsd:gYear ; 
+        ldto:dekkingInTijdEindDatum "1929"^^xsd:gYear ;
+        ldto:dekkingInTijdType <https://data.razu.nl/id/dekkingintijdtype/a3e30182626730af3b3c2a7071c58038> # = Verschijningsperiode 
+    ] , [
+        ldto:dekkingInTijdBeginDatum "1941"^^xsd:gYear ; 
+        ldto:dekkingInTijdEindDatum "1941"^^xsd:gYear ;  
+        ldto:dekkingInTijdType <https://data.razu.nl/id/dekkingintijdtype/a3e30182626730af3b3c2a7071c58038> # = Verschijningsperiode 
+    ] ;
+    ldto:beperkingGebruik <https://data.razu.nl/id/licentie/c9ff6ea52d650cc82c5c04dd054aeb1f> ; # optioneel, in ieder geval op niveau aflevering
+    ldto:dekkingInRuimte "Amerongen", "Leersum", "Maarn", "Maarsbergen", "Doorn", "Driebergen", "Langbroek", "Cothen", "Wijk bij Duurstede" ;  # -> URIs
+    schema:mainEntity [
+        # dit *is* de krantentitel in bibliografische zin:
+        a schema:Newspaper ; 
+        schema:name "De Amerongse Courant" ;
+        schema:alternateName "Nieuws- en advertentieblad voor Amerongen, Leersum, Maarn, Maarsbergen, Doorn, Driebergen, Langbroek, Cothen, Wijk-bij-Duurstede enz" ;
+        schema:spatialCoverage "Amerongen", "Leersum", "Maarn", "Maarsbergen", "Doorn", "Driebergen", "Langbroek", "Cothen", "Wijk bij Duurstede" ; # -> URIs
+        schema:temporalCoverage "1870/1929", "1941" ;   # ISO 8601 incl. range '/'-aanduiding; geeft aan wanneer uitgekomen, dus niet per se gelijk aan de ldto:dekkingInTijd
+        schema:publisher "B. Ruitenbeek - Doorn" ;      # -> URI, thesaurus 'actoren'
+        schema:inLanguage "nl" ;                        # conform IETF BCP 47
+        schema:sameAs <EXTERNE_URIs_zoals_KB_catalogus_e.d> 
+    ] ,
+    dct:hasFormat <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-1234-1.meta.json> . # locatie van deze metadata op de storage  
+
+
+# AFLEVERING
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-2>
+    a ldto:Informatieobject ;
+    ldto:aggregatieniveau "archiefstuk";                            # -> URI     
+    ldto:classificatie "aflevering krant" ;                         # -> URI, thesaurus 'soort'
+    ldto:naam "De Amerongse Courant, vol. 8, no. 52 (1929-12-28)" ; # is dit een prettig formaat?
+    ldto:archiefvormer <https://data.razu.nl/id/actor/aafc151236a6978fdf1732dcadb53f2e> ;  # = Utrechtse Heuvelrug
+    ldto:isOnderdeelVan <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-1> ;
+    ldto:locatie "hier aangeven waar dit issue in het depot te vinden is" ;  # TODO formattering
+    ldto:dekkingInTijd [ a ldto:DekkingInTijdGegevens ;     
+        ldto:dekkingInTijdBeginDatum "1929-12-28"^^xsd:date  ; 
+        ldto:dekkingInTijdEindDatum "1929-12-28"^^xsd:date ; 
+        ldto:dekkingInTijdType <https://data.razu.nl/id/dekkingintijdtype/a3e30182626730af3c2a7071c58038> # = Verschijningsperiode 
+    ] ;
+    ldto:beperkingGebruik <https://data.razu.nl/id/licentie/c9ff6ea52d650cc82c5c04dd054aeb1f> ;
+    ldto:dekkingInRuimte "Amerongen", "Leersum", "Maarn", "Maarsbergen", "Doorn", "Driebergen", "Langbroek", "Cothen", "Wijk bij Duurstede" ;  # -> URIs
+    schema:mainEntity [  
+        a schema:PublicationIssue ;
+        schema:name "De Amerongse Courant, vol. 8, no. 52 (1929-12-28)" ;  # formaat? 
+        schema:alternateName "Nieuws- en advertentieblad voor Amerongen, Leersum, Maarn, Maarsbergen, Doorn, Driebergen, Langbroek, Cothen, Wijk-bij-Duurstede enz" ;
+        schema:datePublished "1929-12-28"^^xsd:date ;
+        schema:isPartOf [
+            a schema:PublicationVolume  ;
+            schema:volumeNumber "8"         # = dit is het 8e  jaar dat deze titel uitgegeven wordt
+        ] ;
+        schema:numberOfPages 4;
+        schema:issueNumber "52"             # - dit is de 52e aflevering van dit jaar
+    ] ,
+    dct:hasFormat <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-1234-2.meta.json> . # locatie van deze metadata op de storage  
+
+# BESTAND
+
+# Issue-niveau, een PDF:
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-3>
+    a ldto:Bestand ;
+    ldto:naam "NL-WbDRAZU-K50907905-1234-3.pdf" ;    # een bestand heeft als naam de bestandsnaam :-)
+    ldto:URLBestand "https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-1234-3.pdf"^^xsd:anyURI ;
+    ldto:bestandsformaat <https://data.razu.nl/id/bestandsformaat/84621bf26697a4a776a9007b97023412> ;  # pdf
+    ldto:checksum [ a ldto:ChecksumGegevens ;
+        ldto:checksumAlgoritme <https://data.razu.nl/id/algoritme/7f138a09169b250e9dcb378140907378> ;
+        ldto:checksumDatum "2025-01-13T10:28:59.004406+00:00"^^xsd:dateTime ;
+        ldto:checksumWaarde "c2c90c72aa8516a171324793cba37407" ] ;
+    ldto:isRepresentatieVan <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-2> ;
+    ldto:omvang 370539 ;
+    dct:hasFormat <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-1234-3.meta.json> . # locatie van deze metadata op de storage  
+
+
+# Pagina-niveau, afbeelding:
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-4>
+    a ldto:Bestand ;
+    ldto:naam "NL-WbDRAZU-K50907905-1234-4.jpg" ;    # als hoger niveau + positie , of bestandsnaam?
+    ldto:URLBestand "https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-1234-4.jpg"^^xsd:anyURI ;
+    ldto:bestandsformaat <https://data.razu.nl/id/bestandsformaat/84621bf26697a4a776a9007b97023412> ;  # jp2
+    ldto:checksum [ a ldto:ChecksumGegevens ;
+        ldto:checksumAlgoritme <https://data.razu.nl/id/algoritme/7f138a09169b250e9dcb378140907378> ;
+        ldto:checksumDatum "2025-01-13T10:28:59.004406+00:00"^^xsd:dateTime ;
+        ldto:checksumWaarde "c2c90c72aa8516a171324793cba37407" ] ;
+    ldto:isRepresentatieVan <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-2> ;
+    ldto:omvang 370539 ;
+    iiif:service <https://iiif.example.com/iiif/issue1/page1> ;     # nader te bepalen IIIF Image API Endpoint
+    schema:width 4000 ;
+    schema:height 6000 ;
+    schema:position 1 ;
+    dct:hasFormat <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-1234-4.meta.json> . 
+
+
+# Pagina-niveau, alto-xml:
+<https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-5>
+    a ldto:Bestand ;
+    ldto:naam "NL-WbDRAZU-K50907905-1234-5.alto.xml" ;
+    ldto:URLBestand "https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-1234-5.alto.xml"^^xsd:anyURI ;
+    ldto:bestandsformaat <https://data.razu.nl/id/bestandsformaat/84621bf26697a4a776a9007b97023412> ;  # xml;
+    ldto:checksum [ a ldto:ChecksumGegevens ;
+        ldto:checksumAlgoritme <https://data.razu.nl/id/algoritme/7f138a09169b250e9dcb378140907378> ;
+        ldto:checksumDatum "2025-01-13T10:28:59.004406+00:00"^^xsd:dateTime ;
+        ldto:checksumWaarde "c2c90c72aa8516a171324793cba37407" ] ;
+    ldto:isRepresentatieVan <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-2> ;
+    ldto:omvang 370539 ;
+    schema:position 1 ;
+    dct:hasFormat <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-1234-5.meta.json> . 
+
+
+
+
+
+
