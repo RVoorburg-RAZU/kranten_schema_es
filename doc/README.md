@@ -12,6 +12,7 @@ LDTO als kader vraag om de opzet van een hiërarchie van `ldto:Informatieobjecte
 2. De verzameling van kranten die tot één titel behoren,
 3. Een exemplaar van een een aflevering ( issue') van een krant.
 
+## Collectie
 Het niveau van de collectie zouden we dan als volgt kunnen invullen:
 
     <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-0>
@@ -30,6 +31,8 @@ Het niveau van de collectie zouden we dan als volgt kunnen invullen:
  
 Let op, `ldto:aggregatieniveau` en `ldto:classificatie` krijgen als waarde een URI, hier voor de leesbaarheid als een `literal` getoond. Deze collectie omsluit materiaal van meerdere archiefvormers. Het materiaal wordt bewaard in de S3-bucket op naam van RAZU (inclusief bijbehordende naamgeving URIs). In het voorbeeld is niet expliciet een `ldto:identifier` opgenomen. Hier is de URI, het RDF-subject, de identifier. Een `ldto:identifier` kan opgegeven worden om bijvoorbeeld een koppeling met deze collectie in een legacy-systeem vast te leggen. We linken altijd van lager in de hiërarchie naar hoger in de hiërarchie. Op dit hoogste niveau zijn er dus geen links naar een lager niveau.
 
+
+## Serie
 Eén niveau lager, dat van de verzameling van kranten met dezelfde titel, is een `ldto:Informatieobject` op het `ldto:aggregatieniveau` "*serie*". Deze "serie" is niet één-op-één gelijk aan een krantentitel. De "serie" is de *concrete deelverzameling van archiefstukken*, een (kranten-) titel is een abstractere bibliografische entiteit. Gesteld mag worden dat het `ldto:Informatieobject` betrekking heeft op de bibliografische krantentitel (als *groeperings-criterium*). Dit onderscheid leggen we als volgt vast:
 
     <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-1>
@@ -67,6 +70,7 @@ Eén niveau lager, dat van de verzameling van kranten met dezelfde titel, is een
 
 Het koppeling tussen de serie van archiefstukken die tot de zelfde titel behoren als de titel zelf, gebeurt hier via de `schema:mainEntity-relatie`. Bemerk dat de *dekkingInTijd* / *temporalCoverage*  kunnen verschillen omdat ze betrekking hebben op verschillende soorten entiteiten.
 
+## Archiefstuk
 Één niveau lager is het `ldto:Informatieobject` een gearchiveerd *exemplaar* van een aflevering van het tijdschrift. Ook hier wordt de relatie tussen het concrete archiefstuk de abstractere bibliografische aflevering gerepresenteerd via de `schema:mainEntity-relatie`:
 
     <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-2>
@@ -99,6 +103,7 @@ Het koppeling tussen de serie van archiefstukken die tot de zelfde titel behoren
         dct:hasFormat <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-1234-2.meta.json> . 
 
 
+## Bestanden
 Van een aflevering worden digitaal, als bestand, de pagina's bewaard. Om de metadata niet onnodig complex te maken, en verwarring te voorkomen dat een archiefstuk (aflevering) ook weer archiefstukken (digitale pagina's) bevat, modeleren we een pagina *niet* als een `ldto:Informatieobject` maar enkel als een `ldto:Bestand`. Het bestand biedt een representatie van de aflevering. Op pagina-niveau zijn meerdere representaties mogelijk, bijvoorbeeld de afbeelding (scan) of de alto-xml.
 
     <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-4>
