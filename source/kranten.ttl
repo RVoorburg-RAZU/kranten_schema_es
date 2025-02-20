@@ -10,8 +10,8 @@
 <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-0>
     a schema:Collection ;
     schema:additionalType "bibliografische collectie" ;     # aka ldto:classification, toe te voegen aan thes. 'soort'
-    schema:name "RAZU Krantencollectie" ;
-    schema:temporalCoverage "1800-01-01/1900-12-31" .       # of eventueel startDate en endDate, maar daar kunnen ook de objecten voor bevraagd worden
+    schema:name "Collectie kranten" ;                       # naamgeving volgt model "Collectie xxx" (beginkapitaal?)
+    schema:temporalCoverage "1800-01-01/1900-12-31" .       # ISO 8601, deze vorm hier vooral gekozen om zo te kunnen tonen.
 
 
 # TITELS
