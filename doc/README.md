@@ -26,7 +26,7 @@ Het niveau van de collectie zouden we dan als volgt kunnen invullen:
             ldto:dekkingInTijdBeginDatum "1800"^^xsd:gYear ;                                    # altijd ISO 8601, maar ranges opgesplitst
             ldto:dekkingInTijdEindDatum "1980"^^xsd:gYear ;  
             ldto:dekkingInTijdType <https://data.razu.nl/id/dekkingintijdtype/a3e30182626730af3b3c2a7071c58038> # = Verschijningsperiode 
-        ] ,
+        ] ;
         dct:hasFormat <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-1234-0.meta.json> . # locatie van deze metadata op de storage  
  
 Let op, `ldto:aggregatieniveau` en `ldto:classificatie` krijgen als waarde een URI, hier voor de leesbaarheid als een `literal` getoond. Deze collectie omsluit materiaal van meerdere archiefvormers. Het materiaal wordt bewaard in de S3-bucket op naam van RAZU (inclusief bijbehordende naamgeving URIs). In het voorbeeld is niet expliciet een `ldto:identifier` opgenomen. Hier is de URI, het RDF-subject, de identifier. Een `ldto:identifier` kan opgegeven worden om bijvoorbeeld een koppeling met deze collectie in een legacy-systeem vast te leggen. We linken altijd van lager in de hiërarchie naar hoger in de hiërarchie. Op dit hoogste niveau zijn er dus geen links naar een lager niveau.
@@ -64,7 +64,7 @@ Eén niveau lager, dat van de verzameling van kranten met dezelfde titel, is een
             schema:publisher "B. Ruitenbeek - Doorn" ;      # -> URI, thesaurus 'actoren'
             schema:inLanguage "nl" ;                        # conform IETF BCP 47
             schema:sameAs <EXTERNE_URIs_zoals_KB_catalogus_e.d> 
-        ] ,
+        ] ;
         dct:hasFormat <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-1234-1.meta.json> . # locatie van deze metadata op de storage  
 
 
