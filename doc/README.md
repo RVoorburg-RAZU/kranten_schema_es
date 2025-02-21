@@ -34,7 +34,7 @@ Deze collectie omsluit materiaal van meerdere archiefvormers. Het materiaal word
 
 
 ## Serie
-Eén niveau lager, dat van de verzameling van kranten met dezelfde titel, is een `ldto:Informatieobject` op het `ldto:aggregatieniveau` "*serie*". Deze "serie" is niet één-op-één gelijk aan een krantentitel. De "serie" is de *concrete deelverzameling van archiefstukken*, een (kranten-) titel is een abstractere bibliografische entiteit. Gesteld mag worden dat het `ldto:Informatieobject` betrekking heeft op de bibliografische krantentitel (als *groeperings-criterium*). Dit onderscheid leggen we als volgt vast:
+Eén niveau lager, dat van de verzameling van kranten met dezelfde titel, is een `ldto:Informatieobject` op het `ldto:aggregatieniveau` "*serie*". Deze "serie" is niet één-op-één gelijk aan een krantentitel. De "serie" is de *concrete deelverzameling van archiefstukken*, een (kranten-) titel is een abstractere bibliografische entiteit. Gesteld mag worden dat het `ldto:Informatieobject` *betrekking heeft* op de bibliografische krantentitel (als een *groeperings-criterium*). Dit onderscheid leggen we als volgt vast:
 
     <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-1>
         a ldto:Informatieobject ;
@@ -87,9 +87,27 @@ Eén niveau lager, dat van de verzameling van kranten met dezelfde titel, is een
         ] ;
         dct:hasFormat <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-1234-1.meta.json> . # locatie van deze metadata op de storage  
 
+Het koppeling tussen de serie van archiefstukken die tot de zelfde titel behoren en de titel zelf, gebeurt hier via de `schema:mainEntity-relatie`. Die verwijst naar de titel zoals opgenomen in een thesaurus:
 
-Het koppeling tussen de serie van archiefstukken die tot de zelfde titel behoren als de titel zelf, gebeurt hier via de `schema:mainEntity-relatie`. Bemerk dat de *dekkingInTijd* / *temporalCoverage*  kunnen verschillen omdat ze betrekking hebben op verschillende soorten entiteiten. Voor de volledigheid van de bibliografische beschrijving is er zowel een `ldto:dekkingInRuimte` als een `schema:spatialCoverage`, hoewel hun waarden overeenkomen.
+    <https://data.razu.nl/id/pub/20f3edb47790a8e083c087a9a6d1e460>
+        a schema:Newspaper ; 
+        schema:name "De Amerongse Courant" ;
+        schema:alternateName "Nieuws- en advertentieblad voor Amerongen, Leersum, Maarn, Maarsbergen, Doorn, Driebergen, Langbroek, Cothen, Wijk-bij-Duurstede enz" ;
+        schema:spatialCoverage <https://data.razu.nl/id/locatie/bf16fd9ceb0435731ea10b6e92c0848b>, # "Amerongen", 
+            <https://data.razu.nl/id/locatie/152aa32fa903d3502880686e0d362668>, # "Leersum"
+            <https://data.razu.nl/id/locatie/218bbb2e70cfce022ae09d6a4327b899>, # "Maarn"
+            <https://data.razu.nl/id/locatie/a56c9792ea7d0614d0770b9bd46e3e56>, # "Maarsbergen" 
+            <https://data.razu.nl/id/locatie/a4ed213e4fcc0888b2a88ab1a81847c4>, # "Doorn"
+            <https://data.razu.nl/id/locatie/2f3d1d59d29f6f07ac921eb57fe37fbc>, # "Driebergen"
+            <https://data.razu.nl/id/locatie/f43ef3ffcb8654ff73a672a05b88b404>, # "Langbroek"
+            <https://data.razu.nl/id/locatie/f5ef414df02e8a28bb60055ff6e1c151>, # "Cothen"
+            <https://data.razu.nl/id/locatie/d5acdcc4f873045aaefd2a31af723153>; # "Wijk bij Duurstede" 
+        schema:temporalCoverage "1870/1929", "1941" ;   # ISO 8601 incl. range '/'-aanduiding; geeft aan wanneer uitgekomen, dus niet per se gelijk aan de ldto:dekkingInTijd
+        schema:publisher <https://data.razu.nl/id/actor/fdf07d26952c341ed9a70909eb3a4a73> ;  #  "B. Ruitenbeek - Doorn" ; 
+        schema:inLanguage "nl" .                        # conform IETF BCP 47
 
+
+Bemerk dat de *dekkingInTijd* / *temporalCoverage*  tussen het `ldto:Informatieobject` en de krantentitel kunnen verschillen omdat ze betrekking hebben op verschillende soorten entiteiten. 
 
 ## Archiefstuk
 Één niveau lager is het `ldto:Informatieobject` een gearchiveerd *exemplaar* van een aflevering van het tijdschrift. Ook hier wordt de relatie tussen het concrete archiefstuk de abstractere bibliografische 'aflevering' gerepresenteerd via de `schema:mainEntity-relatie`:
