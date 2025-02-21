@@ -92,7 +92,7 @@ Het koppeling tussen de serie van archiefstukken die tot de zelfde titel behoren
 Bemerk dat de *dekkingInTijd* / *temporalCoverage*  tussen het `ldto:Informatieobject` en de krantentitel kunnen verschillen omdat ze betrekking hebben op verschillende soorten entiteiten. 
 
 ## Archiefstuk
-Één niveau lager is het `ldto:Informatieobject` een gearchiveerd *exemplaar* van een aflevering van het tijdschrift. Ook hier wordt de relatie tussen het concrete archiefstuk de abstractere bibliografische 'aflevering' gerepresenteerd via de `schema:mainEntity-relatie`:
+Één niveau lager is het `ldto:Informatieobject` een gearchiveerd *exemplaar* van een aflevering van het tijdschrift. Ook hier wordt de relatie tussen het concrete archiefstuk de abstractere bibliografische 'aflevering' gerepresenteerd via de `schema:mainEntity`-relatie. In dit voorbeeld staat de aflevering *niet* in de thesaurus maar is het als een *blank node* opgenomen.
 
     <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-2>
         a ldto:Informatieobject ;
