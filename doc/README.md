@@ -120,7 +120,8 @@ Bemerk dat de *dekkingInTijd* / *temporalCoverage*  tussen het `ldto:Informatieo
             schema:datePublished "1929-12-28"^^xsd:date ;
             schema:isPartOf [
                 a schema:PublicationVolume  ;
-                schema:volumeNumber "8"         # = dit is het 8e  jaar dat deze titel uitgegeven wordt
+                schema:volumeNumber "8" ;        # = dit is het 8e  jaar dat deze titel uitgegeven wordt
+                schema:isPartOf <https://data.razu.nl/id/pub/20f3edb47790a8e083c087a9a6d1e460> 
             ] ;
             schema:numberOfPages 4;
             schema:issueNumber "52"             # - dit is de 52e aflevering van dit jaar
