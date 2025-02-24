@@ -55,7 +55,7 @@ Eén niveau lager, dat van de verzameling van kranten met dezelfde titel, is een
             ldto:dekkingInTijdEindDatum "1941"^^xsd:gYear ;  
             ldto:dekkingInTijdType <https://data.razu.nl/id/dekkingintijdtype/a3e30182626730af3b3c2a7071c58038> # = Verschijningsperiode 
         ] ;
-        ldto:beperkingGebruik <https://data.razu.nl/id/licentie/c9ff6ea52d650cc82c5c04dd054aeb1f> ; # optioneel, in ieder geval op niveau aflevering
+        ldto:beperkingGebruik <https://data.razu.nl/id/beperkinggebruik/{TODO}> ; # nader in te vullen, incl. te tonen gebruiksvoorwaarden
         ldto:dekkingInRuimte 
             <https://data.razu.nl/id/locatie/bf16fd9ceb0435731ea10b6e92c0848b>, # "Amerongen", 
             <https://data.razu.nl/id/locatie/152aa32fa903d3502880686e0d362668>, # "Leersum"
@@ -112,10 +112,16 @@ Bemerk dat de *dekkingInTijd* / *temporalCoverage*  tussen het `ldto:Informatieo
             <https://data.razu.nl/id/locatie/f43ef3ffcb8654ff73a672a05b88b404>, # "Langbroek"
             <https://data.razu.nl/id/locatie/f5ef414df02e8a28bb60055ff6e1c151>, # "Cothen"
             <https://data.razu.nl/id/locatie/d5acdcc4f873045aaefd2a31af723153>; # "Wijk bij Duurstede" 
-        ldto:beperkingGebruik <https://data.razu.nl/id/licentie/c9ff6ea52d650cc82c5c04dd054aeb1f> ;
-        schema:mainEntity [  
+        ldto:dekkingInTijd  [
+            a ldto:DekkingInTijdGegevens ;
+            ldto:dekkingInTijdBeginDatum "1929-12-28"^^xsd:date ; 
+            ldto:dekkingInTijdEindDatum "1929-12-28"^^xsd:date ;  
+            ldto:dekkingInTijdType <https://data.razu.nl/id/dekkingintijdtype/a3e30182626730af3b3c2a7071c58038> # = Verschijningsperiode 
+        ] ;
+        ldto:beperkingGebruik <https://data.razu.nl/id/beperkinggebruik/{TODO}> ; # nader in te vullen, incl. te tonen gebruiksvoorwaarden
+        schema:mainEntity [   # nu niet in thesaurus opnemen, zou eventueel wel kunnen
             a schema:PublicationIssue ;
-            schema:name "De Amerongse Courant, vol. 8, no. 52 (1929-12-28)" ;                               # formaat beschrijving?? 
+            schema:name "De Amerongse Courant, jaarg. 8, nr. 52 (1929-12-28)" ; 
             schema:alternateName "Nieuws- en advertentieblad voor Amerongen, Leersum, Maarn, Maarsbergen, Doorn, Driebergen, Langbroek, Cothen, Wijk-bij-Duurstede enz" ;
             schema:datePublished "1929-12-28"^^xsd:date ;
             schema:isPartOf [
@@ -154,8 +160,16 @@ Van een aflevering worden digitaal, als bestand, de pagina's bewaard. Om de meta
 
 Bovenstaande geeft de afbeelding van pagina 1. Het is herkenbaar als afbeelding door het `ldto:bestandsformaat` en dat een breedte en een hoogte gegeven zijn (in pixels, via `schema:width` en `schema:height`). In aanvulling op de URI van het object, de locatie op de S3 (`ldto:URLBestand`) en locatie van deze metadata op de S3 (`dct:hasFormat`) biedt deze metadata ook de IIIF-URI (`iiif:service`) van de afbeelding zoals beschikbaar via de (nog in te richten IIIF-service).
 
+Als we willen vastleggen wat de eerder gebruikte bestandsnaam was, dan kunnen we daar PREMIS voor gebruiken. In de PREMIS logging gebruiken we de CDN-URIs van de bestanden. We leggen de oorspronkelijke bestandsnaam daarom als volgt vast:
+
+    <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-1234-4.jpg>
+        a premis:File ;
+        premis:originalName "NL-WbDRAZU-K50907905-506-AC-445-13.jpg" .
+
+Deze metadata wordt, samen met de beschrijving van <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-4>, opgeslagen in <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-1234-4.meta.json>.
+
 Als het bestand representatief zou zijn voor het volledige exemplaar van de aflevering, dan zou attribuut `schema:position` ontbreken.
-Als het bestand een alto-xml zou zijn, dan zou dat indirect herleid kunnen worden aan het `ldto:bestandsformaat` ("xml") en aan de extensie in `ldto:URLBestand` (eingdigt op "alto.xml"). Daarnaast zou het object geen attributen `schema:width`, `schema:height` of `iiif.service` bevatten. Hier volgt een voorbeeld van een PDF van de complete aflevering een een voorbeeld van een alt-xml:
+Als het bestand een alto-xml zou zijn, dan zou dat indirect herleid kunnen worden aan het `ldto:bestandsformaat` ("xml") en aan de extensie in `ldto:URLBestand` (eingdigt op "alto.xml"). Daarnaast zou het object geen attributen `schema:width`, `schema:height`, `schema:position` of `iiif.service` bevatten maar wel via `schema:about` een verwijzing naar de afbeelding (scan) van de pagina waar het bij hoort. Hier volgt een voorbeeld van een PDF van de complete aflevering een een voorbeeld van een alt-xml:
 
     <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-3>
         a ldto:Bestand ;
@@ -181,7 +195,7 @@ Als het bestand een alto-xml zou zijn, dan zou dat indirect herleid kunnen worde
             ldto:checksumWaarde "c2c90c72aa8516a171324793cba37407" ] ;
         ldto:isRepresentatieVan <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-2> ;
         ldto:omvang 370539 ;
-        schema:position 1 ;
+        schema:about <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-4> ;     # dit bestand is annotatie van / 'about' afbeelding
         dct:hasFormat <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-1234-5.meta.json> . 
 
 
