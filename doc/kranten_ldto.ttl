@@ -100,7 +100,7 @@
         <https://data.razu.nl/id/locatie/f5ef414df02e8a28bb60055ff6e1c151>, # "Cothen"
         <https://data.razu.nl/id/locatie/d5acdcc4f873045aaefd2a31af723153>; # "Wijk bij Duurstede" 
     ldto:beperkingGebruik <https://data.razu.nl/id/beperkinggebruik/{TODO}> ; # nader in te vullen, incl. te tonen gebruiksvoorwaarden
- +  ldto:dekkingInTijd  [
+    ldto:dekkingInTijd  [
         a ldto:DekkingInTijdGegevens ;
         ldto:dekkingInTijdBeginDatum "1929-12-28"^^xsd:date ; 
         ldto:dekkingInTijdEindDatum "1929-12-28"^^xsd:date ;  
@@ -113,11 +113,11 @@
         schema:datePublished "1929-12-28"^^xsd:date ;
         schema:isPartOf [
             a schema:PublicationVolume  ;
-            schema:volumeNumber "8"  # = dit is het 8e  jaar dat deze titel uitgegeven wordt
+            schema:volumeNumber 8  # = dit is het 8e  jaar dat deze titel uitgegeven wordt
             schema:isPartOf <https://data.razu.nl/id/pub/20f3edb47790a8e083c087a9a6d1e460>
         ] ;
         schema:numberOfPages 4;
-        schema:issueNumber "52"             # - dit is de 52e aflevering van dit jaar
+        schema:issueNumber 52             # - dit is de 52e aflevering van dit jaar
     ] ;
     dct:hasFormat <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-1234-2.meta.json> . # locatie van deze metadata op de storage  
 
