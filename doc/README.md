@@ -55,7 +55,6 @@ Eén niveau lager, dat van de verzameling van kranten met dezelfde titel, is een
             ldto:dekkingInTijdEindDatum "1941"^^xsd:gYear ;  
             ldto:dekkingInTijdType <https://data.razu.nl/id/dekkingintijdtype/a3e30182626730af3b3c2a7071c58038> # = Verschijningsperiode 
         ] ;
-        ldto:beperkingGebruik <https://data.razu.nl/id/beperkinggebruik/{TODO}> ; # nader in te vullen, incl. te tonen gebruiksvoorwaarden
         ldto:dekkingInRuimte 
             <https://data.razu.nl/id/locatie/bf16fd9ceb0435731ea10b6e92c0848b>, # "Amerongen", 
             <https://data.razu.nl/id/locatie/152aa32fa903d3502880686e0d362668>, # "Leersum"

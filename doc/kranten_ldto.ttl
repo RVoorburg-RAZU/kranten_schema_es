@@ -3,6 +3,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix ldto: <https://data.razu.nl/def/ldto/> .
 @prefix dct: <http://purl.org/dc/terms/> .
+@prefix premis: <http://www.loc.gov/premis/rdf/v3/> .
 
 
 # Testdata opzet krantenmetadata
@@ -13,7 +14,7 @@
 <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-0> # hernummerd, oorspronkelijk bestandsnaam ook vastleggen? ja &nu geen ids uit MF
     a ldto:Informatieobject ;
     ldto:aggregatieniveau <https://data.razu.nl/id/aggregatieniveau/62d05f1b8d586edb7da7f257be926705> ;  # archief
-    ldto:classificatie <https://data.razu.nl/id/soort/89cfa9e6349cc6bdf87135c96cd37e14>  ;  # bibliografische collectie
+    ldto:classificatie <https://data.razu.nl/id/soort/89cfa9e6349cc6bdf87135c96cd37e14>   ;  # bibliografische collectie
     ldto:naam "Collectie kranten" ;                                                         # model "Collectie xxx" - beginkapitaal? 
     ldto:archiefvormer <https://data.razu.nl/id/actor/2bdb658a032a405d71c19159bd2bbb3a>,    # RAZU 
         <https://data.razu.nl/id/actor/aafc151236a6978fdf1732dcadb53f2e> ;                  # Utrechtse Heuvelrug (etc.)
@@ -27,7 +28,7 @@
 
 
 # BIBLIOGRAFISCHE TITEL
-<https://data.razu.nl/id/pub/20f3edb47790a8e083c087a9a6d1e460>
+<https://data.razu.nl/id/pub/20f3edb47790a8e083c087a9a6d1e460>                              # link nog niet actief
         a schema:Newspaper ; 
         schema:name "De Amerongse Courant" ;
         schema:alternateName "Nieuws- en advertentieblad voor Amerongen, Leersum, Maarn, Maarsbergen, Doorn, Driebergen, Langbroek, Cothen, Wijk-bij-Duurstede enz" ;
@@ -65,7 +66,6 @@
         ldto:dekkingInTijdEindDatum "1941"^^xsd:gYear ;  
         ldto:dekkingInTijdType <https://data.razu.nl/id/dekkingintijdtype/a3e30182626730af3b3c2a7071c58038> # = Verschijningsperiode 
     ] ;
-    ldto:beperkingGebruik <https://data.razu.nl/id/beperkinggebruik/{TODO}> ; # nader in te vullen, incl. te tonen gebruiksvoorwaarden
     ldto:dekkingInRuimte 
         <https://data.razu.nl/id/locatie/bf16fd9ceb0435731ea10b6e92c0848b>, # "Amerongen", 
         <https://data.razu.nl/id/locatie/152aa32fa903d3502880686e0d362668>, # "Leersum"
@@ -85,21 +85,21 @@
     a ldto:Informatieobject ;
     ldto:aggregatieniveau <https://data.razu.nl/id/aggregatieniveau/96f7399fb1c5d3b7d2acdc48dac3d71e>;  # archiefstuk    
     ldto:classificatie <https://data.razu.nl/id/soort/30d2cbfabc5d7cf795d3ddb00b1e8260> ;               # aflevering (van seriële publicatie)
-    ldto:naam "De Amerongse Courant, vol. 8, no. 52 (1929-12-28)" ;         # taal?                            # is dit een prettig formaat?
+    ldto:naam "De Amerongse Courant, jaarg. 8, nr. 52 (1929-12-28)" ;         # taal?                            # is dit een prettig formaat?
     ldto:archiefvormer <https://data.razu.nl/id/actor/aafc151236a6978fdf1732dcadb53f2e> ;               # Utrechtse Heuvelrug
     ldto:isOnderdeelVan <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-1> ;
     ldto:raadpleeglocatie "hier aangeven waar dit issue in het depot te vinden is" ;                    # TODO formattering?
-    ldto:dekkingInRuimte 
-        <https://data.razu.nl/id/locatie/bf16fd9ceb0435731ea10b6e92c0848b>, # "Amerongen", 
-        <https://data.razu.nl/id/locatie/152aa32fa903d3502880686e0d362668>, # "Leersum"
-        <https://data.razu.nl/id/locatie/218bbb2e70cfce022ae09d6a4327b899>, # "Maarn"
-        <https://data.razu.nl/id/locatie/a56c9792ea7d0614d0770b9bd46e3e56>, # "Maarsbergen" 
-        <https://data.razu.nl/id/locatie/a4ed213e4fcc0888b2a88ab1a81847c4>, # "Doorn"
-        <https://data.razu.nl/id/locatie/2f3d1d59d29f6f07ac921eb57fe37fbc>, # "Driebergen"
-        <https://data.razu.nl/id/locatie/f43ef3ffcb8654ff73a672a05b88b404>, # "Langbroek"
-        <https://data.razu.nl/id/locatie/f5ef414df02e8a28bb60055ff6e1c151>, # "Cothen"
-        <https://data.razu.nl/id/locatie/d5acdcc4f873045aaefd2a31af723153>; # "Wijk bij Duurstede" 
-    ldto:beperkingGebruik <https://data.razu.nl/id/beperkinggebruik/{TODO}> ; # nader in te vullen, incl. te tonen gebruiksvoorwaarden
+    ldto:beperkingGebruik [
+       a ldto:BeperkingGebruikGegevens ; 
+       ldto:beperkingGebruikType <https://data.razu.nl/id/beperkinggebruiktype/7c06ee72d9cbd6a8ab71f6d409c34a20> # Geen *openbaarheids*beperkingen
+    ] , [
+        a ldto:BeperkingGebruikGegevens ; 
+        ldto:beperkingGebruikType <https://data.razu.nl/id/beperkinggebruiktype/b270c98d99c3e7951da85ca84a34f35a> ; # koepelovereenkomst periodieken
+        ldto:beperkingGebruikTermijn [
+            a ldto:TermijnGegevens ;
+            ldto:termijnEinddatum "2035"^^xsd:gYear
+        ]
+    ] ;
     ldto:dekkingInTijd  [
         a ldto:DekkingInTijdGegevens ;
         ldto:dekkingInTijdBeginDatum "1929-12-28"^^xsd:date ; 
@@ -113,7 +113,7 @@
         schema:datePublished "1929-12-28"^^xsd:date ;
         schema:isPartOf [
             a schema:PublicationVolume  ;
-            schema:volumeNumber 8  # = dit is het 8e  jaar dat deze titel uitgegeven wordt
+            schema:volumeNumber 8 ;  # = dit is het 8e  jaar dat deze titel uitgegeven wordt
             schema:isPartOf <https://data.razu.nl/id/pub/20f3edb47790a8e083c087a9a6d1e460>
         ] ;
         schema:numberOfPages 4;
@@ -129,7 +129,8 @@
     ldto:naam "NL-WbDRAZU-K50907905-1234-3.pdf" ;    # een bestand heeft als naam de bestandsnaam :-)
     ldto:URLBestand <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-1234-3.pdf> ;
     ldto:bestandsformaat <https://data.razu.nl/id/bestandsformaat/84621bf26697a4a776a9007b97023412> ;  # pdf
-    ldto:checksum [ a ldto:ChecksumGegevens ;
+    ldto:checksum [ 
+        a ldto:ChecksumGegevens ;
         ldto:checksumAlgoritme <https://data.razu.nl/id/algoritme/7f138a09169b250e9dcb378140907378> ;
         ldto:checksumDatum "2025-01-13T10:28:59.004406+00:00"^^xsd:dateTime ;
         ldto:checksumWaarde "c2c90c72aa8516a171324793cba37407" ] ;
@@ -144,7 +145,8 @@
     ldto:naam "NL-WbDRAZU-K50907905-1234-4.jpg" ;    # als hoger niveau + positie , of bestandsnaam?
     ldto:URLBestand <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-1234-4.jpg> ;
     ldto:bestandsformaat <https://data.razu.nl/id/bestandsformaat/84621bf26697a4a776a9007b97023412> ;  # jp2
-    ldto:checksum [ a ldto:ChecksumGegevens ;
+    ldto:checksum [ 
+        a ldto:ChecksumGegevens ;
         ldto:checksumAlgoritme <https://data.razu.nl/id/algoritme/7f138a09169b250e9dcb378140907378> ;
         ldto:checksumDatum "2025-01-13T10:28:59.004406+00:00"^^xsd:dateTime ;
         ldto:checksumWaarde "c2c90c72aa8516a171324793cba37407" ] ;
@@ -167,7 +169,8 @@
     ldto:naam "NL-WbDRAZU-K50907905-1234-5.alto.xml" ;
     ldto:URLBestand <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-1234-5.alto.xml> ;
     ldto:bestandsformaat <https://data.razu.nl/id/bestandsformaat/84621bf26697a4a776a9007b97023412> ;  # xml;
-    ldto:checksum [ a ldto:ChecksumGegevens ;
+    ldto:checksum [ 
+        a ldto:ChecksumGegevens ;
         ldto:checksumAlgoritme <https://data.razu.nl/id/algoritme/7f138a09169b250e9dcb378140907378> ;
         ldto:checksumDatum "2025-01-13T10:28:59.004406+00:00"^^xsd:dateTime ;
         ldto:checksumWaarde "c2c90c72aa8516a171324793cba37407" ] ;
@@ -175,9 +178,6 @@
     schema:about <https://data.razu.nl/id/object/NL-WbDRAZU-K50907905-1234-4> ;     # dit bestand is annotatie van / 'about' afbeelding
     ldto:omvang 370539 ;
     dct:hasFormat <https://k50907905.opslag.razu.nl/NL-WbDRAZU-K50907905-1234-5.meta.json> . 
-
-
-
 
 
 
